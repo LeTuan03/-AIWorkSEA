@@ -1,0 +1,396 @@
+@import "tailwindcss";
+
+/* next-themes toggles `.dark` on <html>; make Tailwind's dark: variant follow it. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  GLASSMORPHISM DESIGN SYSTEM — AIWork SEA
+  Implements glassmorphism_design_system.md (2026 Edition).
+
+  - Dark Premium is the flagship (§5.1): bg gradient #0f172a→#1e293b→#312e81,
+    aurora blur circles + subtle noise (§2.1), white text 0.95/0.72/0.55 (§4.3).
+  - Light is the pastel-gradient variant (§2.1) with the same glass mechanics.
+  - Glass per component (§3.2/§3.3): card .08 / blur 20, hover .12, navbar .05 / 16,
+    modal .16 / blur 28, small .06 / blur 12. Border rgba(255,255,255,.15),
+    shadow 0 8px 32px rgba(0,0,0,.25) (§3.1).
+  - Radius (§10/§12/§13/§11): card 24, button/input 18, modal 32.
+  - Primary button is a violet→indigo gradient (§12), kept dark enough for
+    WCAG AA white text (§16/§22); cyan (§5) lives in the background gradients,
+    never under text. Every glass surface degrades to opaque --surface under
+    prefers-reduced-transparency and where backdrop-filter is unsupported (§16).
+  - Mobile reduces blur + shadow (§15) to stay under the blur-layer budget (§17).
+*/
+
+@theme inline {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+
+  --color-accent: var(--accent);
+  --color-accent-weak: var(--accent-weak);
+  --color-accent-weak-fg: var(--accent-weak-fg);
+  --color-accent-solid: var(--accent-solid);
+  --color-accent-solid-fg: var(--accent-solid-fg);
+  --color-ring: var(--ring);
+
+  --color-success: var(--success);
+  --color-success-weak: var(--success-weak);
+  --color-warn: var(--warn);
+  --color-warn-weak: var(--warn-weak);
+  --color-danger: var(--danger);
+  --color-danger-weak: var(--danger-weak);
+
+  /* Card radius = 24px per §10; drives every `rounded-2xl`. */
+  --radius-2xl: 24px;
+}
+
+/* ---------- LIGHT (pastel-gradient variant) ---------- */
+:root {
+  /* Blur budget (§3.3), shared by both themes; reduced on mobile below. */
+  --blur-card: 20px;
+  --blur-small: 12px;
+  --blur-navbar: 16px;
+  --blur-modal: 28px;
+
+  --bg: #eef1fb;
+  --bg-base:
+    linear-gradient(160deg, #eef2ff 0%, #f5f3ff 45%, #ecfeff 100%);
+  --bg-aurora:
+    radial-gradient(38% 32% at 12% 8%, rgba(124, 58, 237, 0.18), transparent 60%),
+    radial-gradient(34% 30% at 92% 4%, rgba(34, 211, 238, 0.14), transparent 60%),
+    radial-gradient(40% 38% at 70% 100%, rgba(139, 92, 246, 0.14), transparent 62%);
+
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --line: rgba(15, 23, 42, 0.1);
+  --line-strong: rgba(15, 23, 42, 0.16);
+  --fg: #0f172a;
+  --muted: rgba(15, 23, 42, 0.72);
+  --subtle: rgba(15, 23, 42, 0.55);
+
+  --accent: #6d28d9;
+  --accent-weak: #ede9fe;
+  --accent-weak-fg: #5b21b6;
+  --accent-solid: #6d28d9;
+  --accent-solid-fg: #ffffff;
+  --ring: #8b5cf6;
+
+  --success: #047857; --success-weak: #ecfdf5;
+  --warn: #b45309;    --warn-weak: #fffbeb;
+  --danger: #b91c1c;  --danger-weak: #fef2f2;
+  --danger-solid: #dc2626; --danger-solid-hover: #b91c1c; --danger-solid-fg: #ffffff;
+
+  --glass-bg: rgba(255, 255, 255, 0.5);
+  --glass-bg-hover: rgba(255, 255, 255, 0.66);
+  --glass-navbar-bg: rgba(255, 255, 255, 0.55);
+  --glass-modal-bg: rgba(255, 255, 255, 0.72);
+  --glass-field-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-hi: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  --glass-shadow: 0 8px 32px rgba(15, 23, 42, 0.12);
+
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+
+  color-scheme: light;
+}
+
+/* ---------- DARK PREMIUM (flagship, §5.1) ---------- */
+.dark {
+  --bg: #0f172a;
+  --bg-base:
+    linear-gradient(135deg, #0f172a 0%, #1e293b 52%, #312e81 100%);
+  --bg-aurora:
+    radial-gradient(40% 34% at 10% 6%, rgba(124, 58, 237, 0.45), transparent 60%),
+    radial-gradient(36% 32% at 94% 2%, rgba(34, 211, 238, 0.24), transparent 60%),
+    radial-gradient(44% 40% at 72% 104%, rgba(99, 102, 241, 0.32), transparent 62%);
+
+  --surface: #1e293b;
+  --surface-2: #334155;
+  --line: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --fg: rgba(255, 255, 255, 0.95);
+  --muted: rgba(255, 255, 255, 0.72);
+  --subtle: rgba(255, 255, 255, 0.55);
+
+  --accent: #a78bfa;
+  --accent-weak: rgba(139, 92, 246, 0.18);
+  --accent-weak-fg: #c4b5fd;
+  --accent-solid: #7c3aed;
+  --accent-solid-fg: #ffffff;
+  --ring: #8b5cf6;
+
+  --success: #6ee7b7; --success-weak: rgba(16, 185, 129, 0.14);
+  --warn: #fcd34d;    --warn-weak: rgba(245, 158, 11, 0.14);
+  --danger: #fca5a5;  --danger-weak: rgba(239, 68, 68, 0.14);
+  --danger-solid: #dc2626; --danger-solid-hover: #ef4444; --danger-solid-fg: #ffffff;
+
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-bg-hover: rgba(255, 255, 255, 0.12);
+  --glass-navbar-bg: rgba(255, 255, 255, 0.05);
+  --glass-modal-bg: rgba(255, 255, 255, 0.16);
+  --glass-field-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-hi: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23cbd5e1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--bg);
+  background-image: var(--bg-base);
+  background-attachment: fixed;
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Aurora blur circles (§2.1) — cheap gradients, no backdrop-filter. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  z-index: -2;
+  pointer-events: none;
+  background-image: var(--bg-aurora);
+  animation: aurora-float 20s ease-in-out infinite;
+}
+
+/* Fine noise texture (§2.1): ~3% overlay. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes aurora-float {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -2.5%, 0) scale(1.06); }
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@layer components {
+  /* ---- Buttons (radius 18, §12) ---- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3.25rem; /* 52px, §12 */
+    border-radius: 18px;
+    padding: 0 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+      box-shadow 0.2s ease, transform 0.15s ease; /* §14 hover 200ms */
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { cursor: not-allowed; opacity: 0.6; }
+
+  /* Primary = violet→indigo gradient (§12); dark enough for AA white text. */
+  .btn-primary {
+    padding: 0 1.75rem; /* 28px, §12 */
+    color: #ffffff;
+    background-image: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+    box-shadow: 0 10px 30px -10px rgba(79, 70, 229, 0.55);
+  }
+  .btn-primary:hover {
+    background-image: linear-gradient(135deg, #6d28d9 0%, #4338ca 100%);
+  }
+  .btn-secondary {
+    color: var(--fg);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-hi);
+    -webkit-backdrop-filter: blur(var(--blur-small)) saturate(1.5);
+    backdrop-filter: blur(var(--blur-small)) saturate(1.5);
+  }
+  .btn-secondary:hover { background: var(--glass-bg-hover); }
+  .btn-danger {
+    color: var(--danger-solid-fg);
+    background-color: var(--danger-solid);
+  }
+  .btn-danger:hover { background-color: var(--danger-solid-hover); }
+
+  /* ---- Fields (radius 18, height 56, §13) ---- */
+  .field {
+    width: 100%;
+    min-height: 3.5rem; /* 56px */
+    border: 1px solid var(--glass-border);
+    background: var(--glass-field-bg);
+    color: var(--fg);
+    border-radius: 18px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9375rem;
+    -webkit-backdrop-filter: blur(var(--blur-small)) saturate(1.4);
+    backdrop-filter: blur(var(--blur-small)) saturate(1.4);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .field::placeholder { color: var(--subtle); }
+  .field:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 34%, transparent);
+  }
+
+  /* ---- Chips / badges (radius 8) ---- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: 8px;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+  .chip-accent {
+    background: var(--accent-weak);
+    border-color: transparent;
+    color: var(--accent-weak-fg);
+  }
+}
+
+/* ---- Native <select>: custom chevron + themed option list ----
+   The dropdown popup is OS-rendered (no glass/blur possible), so it degrades to
+   a solid, on-theme surface with an accent-highlighted selection. */
+select.field {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.5rem;
+  background-image: var(--select-arrow);
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 1.1rem;
+  cursor: pointer;
+}
+select.field option {
+  background-color: var(--surface);
+  color: var(--fg);
+  padding: 0.5rem 0.75rem;
+}
+select.field option:checked {
+  background-color: var(--accent-weak);
+  color: var(--accent-weak-fg);
+  font-weight: 600;
+}
+
+/* ---- Glass surfaces ---- */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-hi), var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--blur-card)) saturate(1.5);
+  backdrop-filter: blur(var(--blur-card)) saturate(1.5);
+}
+
+/* Navbar / footer / thin bands (§7): lower opacity, 16px blur, no box border. */
+.glass-band {
+  background: var(--glass-navbar-bg);
+  -webkit-backdrop-filter: blur(var(--blur-navbar)) saturate(1.5);
+  backdrop-filter: blur(var(--blur-navbar)) saturate(1.5);
+}
+
+/* Modal (§11): 0.16 fill, 28px blur, radius 32. */
+.glass-modal {
+  border-radius: 32px;
+  background: var(--glass-modal-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-hi), 0 24px 70px -20px rgba(0, 0, 0, 0.5);
+  -webkit-backdrop-filter: blur(var(--blur-modal)) saturate(1.6);
+  backdrop-filter: blur(var(--blur-modal)) saturate(1.6);
+}
+
+/* Card hover (§10): lift -4px, fill bumps to 0.12, .3s. */
+.lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+.lift:hover {
+  transform: translateY(-4px);
+  background: var(--glass-bg-hover);
+  box-shadow: var(--glass-hi), 0 22px 50px -20px rgba(0, 0, 0, 0.35);
+}
+
+/* Subtle entrance for toasts / modals (§14 modal 350ms). */
+@keyframes float-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-float-in { animation: float-in 0.35s ease both; }
+
+/* Floating glass cards in the hero (§8/§21). */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.floaty { animation: floaty 6s ease-in-out infinite; }
+
+/* ---- Required solid fallbacks for glass ---- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass, .glass-band, .glass-modal, .btn-secondary, .field { background-color: var(--surface); }
+  .chip { background-color: var(--surface-2); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass-band, .glass-modal, .btn-secondary, .field, .chip {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .glass, .glass-band, .glass-modal, .btn-secondary, .field { background-color: var(--surface); }
+  .chip { background-color: var(--surface-2); }
+}
+
+/* Mobile: reduce blur + shadow, ease the blur-layer budget (§15/§17). */
+@media (max-width: 768px) {
+  :root {
+    --blur-card: 10px;
+    --blur-small: 8px;
+    --blur-navbar: 10px;
+    --blur-modal: 16px;
+  }
+  .glass { box-shadow: var(--glass-hi), 0 6px 20px rgba(0, 0, 0, 0.18); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  body::before { animation: none; }
+  .animate-float-in { animation: none; }
+  .floaty { animation: none; }
+  .lift { transition: none; }
+  .lift:hover { transform: none; }
+}

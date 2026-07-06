@@ -1,0 +1,74 @@
+// Prisma schema for AIWork SEA — job board for AI/Automation freelancers.
+// Production database: PostgreSQL.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Runtime: Supabase transaction-mode pooler (pgbouncer, IPv4-safe).
+  url = env("DATABASE_URL")
+  // Migrations: Supabase session-mode pooler (direct, non-pooled).
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String @id @default(cuid())
+  email        String @unique
+  passwordHash String
+  name         String?
+  role         String @default("USER") // "USER" | "ADMIN"
+
+  createdAt DateTime @default(now())
+
+  jobs Job[]
+
+  @@index([role])
+}
+
+model Job {
+  id String @id @default(cuid())
+
+  title      String
+  company    String
+  companyUrl String?
+
+  // Taxonomy (values validated against constants in lib/constants.ts)
+  category   String // e.g. "AI/ML Engineering"
+  location   String // country in SEA or "Remote"
+  workType   String // "Remote" | "Hybrid" | "Onsite"
+  engagement String // "Freelance" | "Contract" | "Part-time" | "Project-based"
+
+  // Compensation (stored in USD unless currency overridden)
+  budgetMin Int?
+  budgetMax Int?
+  currency  String @default("USD")
+
+  description String
+  skills     String // comma-separated list, e.g. "Python,LangChain,RAG"
+
+  // How candidates apply
+  applyUrl   String?
+  applyEmail String?
+
+  // Monetization: featured posts float to the top. Admin-gated only.
+  featured Boolean @default(false)
+
+  // Moderation: new posts start PENDING and require admin approval.
+  status String @default("PENDING") // "PENDING" | "PUBLISHED" | "CLOSED"
+
+  // Owner of the listing (the recruiter who posted it).
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([location])
+  @@index([featured])
+  @@index([createdAt])
+  @@index([status])
+  @@index([userId])
+}
