@@ -71,11 +71,6 @@ pnpm db:seed              # nạp dữ liệu mẫu + tài khoản demo
 pnpm dev                  # http://localhost:3000
 ```
 
-### Tài khoản demo (từ seed — đổi/xóa trước production)
-| Vai trò | Email | Mật khẩu |
-|---|---|---|
-| Admin | `admin@aiworksea.local` | `admin123456` |
-| Recruiter | `demo@aiworksea.local` | `demo123456` |
 
 ### Scripts
 ```bash
