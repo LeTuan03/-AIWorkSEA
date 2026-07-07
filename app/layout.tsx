@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
-import "./globals.css";
+import { Geist, Space_Mono } from "next/font/google";
+import "./Retro.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -11,6 +11,14 @@ const geist = Geist({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-geist",
+  display: "swap",
+});
+
+// Retro display / typewriter face for headings, numbers and buttons.
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-mono",
   display: "swap",
 });
 
@@ -49,8 +57,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#eef2ff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+    { media: "(prefers-color-scheme: light)", color: "#ece3cf" },
+    { media: "(prefers-color-scheme: dark)", color: "#201d18" },
   ],
 };
 
@@ -58,7 +66,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="vi" className={geist.variable} suppressHydrationWarning>
+    <html
+      lang="vi"
+      className={`${geist.variable} ${spaceMono.variable}`}
+      suppressHydrationWarning
+    >
       <body className="flex min-h-[100dvh] flex-col">
         <ThemeProvider>
           <Toaster />

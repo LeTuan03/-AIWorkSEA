@@ -1,0 +1,315 @@
+@import "tailwindcss";
+
+/* next-themes toggles `.dark` on <html>; make Tailwind's dark: variant follow it. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  RETRO DESIGN SYSTEM — AIWork SEA
+  Replaces the old glassmorphism sheet. Vintage print / typewriter aesthetic:
+
+  - Warm paper backgrounds, sepia ink text, rust (vermilion) accent.
+  - Flat surfaces with 2px solid ink borders and HARD offset drop-shadows
+    (no blur, no gradient, no backdrop-filter). Crisp small radii.
+  - Monospace display type (Space Mono) for headings, numbers and buttons;
+    clean sans (Geist) for body copy.
+  - Dark theme = "night sepia": warm charcoal paper, cream ink, amber accent.
+
+  The token names and component classes (.glass, .btn, .field, .chip, .lift,
+  .font-display …) are kept identical to the previous system so the markup did
+  not need to change — only the skin did.
+*/
+
+@theme inline {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-mono), ui-monospace, "Courier New", monospace;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+
+  --color-accent: var(--accent);
+  --color-accent-weak: var(--accent-weak);
+  --color-accent-weak-fg: var(--accent-weak-fg);
+  --color-accent-solid: var(--accent-solid);
+  --color-accent-solid-fg: var(--accent-solid-fg);
+  --color-ring: var(--ring);
+
+  --color-success: var(--success);
+  --color-success-weak: var(--success-weak);
+  --color-warn: var(--warn);
+  --color-warn-weak: var(--warn-weak);
+  --color-danger: var(--danger);
+  --color-danger-weak: var(--danger-weak);
+
+  /* Crisp corners everywhere — retro cards read as square-ish paper. */
+  --radius-lg: 3px;
+  --radius-xl: 4px;
+  --radius-2xl: 4px;
+}
+
+/* ---------- LIGHT (aged paper) ---------- */
+:root {
+  --bg: #ece3cf;
+  --surface: #f7f1de;
+  --surface-2: #e4d8bc;
+  --line: #cdbf9c;
+  --line-strong: #2a2620;
+  --fg: #2a2620;
+  --muted: #6b5f48;
+  --subtle: #93856a;
+
+  --accent: #a8331a;
+  --accent-weak: #f0dcc4;
+  --accent-weak-fg: #8f2a12;
+  --accent-solid: #b23a1e;
+  --accent-solid-fg: #f7f1de;
+  --ring: #a8331a;
+
+  --success: #4e7a2f; --success-weak: #e2ead0;
+  --warn: #a86a12;    --warn-weak: #f2e6c8;
+  --danger: #a02c1c;  --danger-weak: #f0d9d0;
+  --danger-solid: #a02c1c; --danger-solid-hover: #872316; --danger-solid-fg: #f7f1de;
+
+  /* Hard offset shadow ink + a faint graph-paper dot grid for the gutters. */
+  --retro-shadow: #2a2620;
+  --grid-dot: rgba(42, 38, 32, 0.05);
+
+  --shadow-card: 4px 4px 0 var(--retro-shadow);
+  --shadow-btn: 3px 3px 0 var(--retro-shadow);
+  --shadow-modal: 8px 8px 0 var(--retro-shadow);
+
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232a2620' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+
+  color-scheme: light;
+}
+
+/* ---------- DARK (night sepia) ---------- */
+.dark {
+  --bg: #201d18;
+  --surface: #2b2721;
+  --surface-2: #3a352c;
+  --line: #453f33;
+  --line-strong: #6f6650;
+  --fg: #ede3cd;
+  --muted: #b7ab90;
+  --subtle: #8a7e64;
+
+  --accent: #e08a4e;
+  --accent-weak: #3a2c1f;
+  --accent-weak-fg: #f0a878;
+  --accent-solid: #cf6a2f;
+  --accent-solid-fg: #201d18;
+  --ring: #e08a4e;
+
+  --success: #8fb35e; --success-weak: #2c3620;
+  --warn: #d9a24a;    --warn-weak: #3a2f18;
+  --danger: #d98a7a;  --danger-weak: #3a241f;
+  --danger-solid: #b0402c; --danger-solid-hover: #c74a34; --danger-solid-fg: #f7f1de;
+
+  --retro-shadow: #000000;
+  --grid-dot: rgba(237, 227, 205, 0.045);
+
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ede3cd' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--bg);
+  /* Faint engineering-paper dot grid; only shows through the gutters. */
+  background-image: radial-gradient(var(--grid-dot) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  background-attachment: fixed;
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@layer components {
+  /* ---- Buttons: chunky, ink border, hard offset shadow, press-in on click ---- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem; /* 48px */
+    border: 2px solid var(--line-strong);
+    border-radius: 4px;
+    padding: 0 1.25rem;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    box-shadow: var(--shadow-btn);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease,
+      color 0.15s ease;
+  }
+  .btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--retro-shadow);
+  }
+  .btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--retro-shadow);
+  }
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    transform: none;
+    box-shadow: var(--shadow-btn);
+  }
+
+  .btn-primary {
+    color: var(--accent-solid-fg);
+    background-color: var(--accent-solid);
+  }
+  .btn-primary:hover {
+    background-color: color-mix(in srgb, var(--accent-solid) 86%, #000);
+  }
+  .btn-secondary {
+    color: var(--fg);
+    background-color: var(--surface);
+  }
+  .btn-secondary:hover { background-color: var(--surface-2); }
+  .btn-danger {
+    color: var(--danger-solid-fg);
+    background-color: var(--danger-solid);
+  }
+  .btn-danger:hover { background-color: var(--danger-solid-hover); }
+
+  /* ---- Fields: solid ink border, inset paper, offset ring on focus ---- */
+  .field {
+    width: 100%;
+    min-height: 3.25rem; /* 52px */
+    border: 2px solid var(--line-strong);
+    border-radius: 4px;
+    background-color: var(--surface);
+    color: var(--fg);
+    padding: 0.75rem 0.9rem;
+    font-size: 0.9375rem;
+    transition: box-shadow 0.12s ease, border-color 0.12s ease;
+  }
+  .field::placeholder { color: var(--subtle); }
+  .field:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 3px 3px 0 var(--accent);
+  }
+
+  /* ---- Chips / badges: small square tags ---- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 0.2rem 0.55rem;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--fg);
+    background-color: var(--surface);
+  }
+  .chip-accent {
+    background-color: var(--accent-weak);
+    border-color: var(--accent);
+    color: var(--accent-weak-fg);
+  }
+}
+
+/* ---- Native <select>: custom chevron + themed option list ---- */
+select.field {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.5rem;
+  background-image: var(--select-arrow);
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1.1rem;
+  cursor: pointer;
+}
+select.field option {
+  background-color: var(--surface);
+  color: var(--fg);
+  padding: 0.5rem 0.75rem;
+}
+select.field option:checked {
+  background-color: var(--accent-weak);
+  color: var(--accent-weak-fg);
+  font-weight: 700;
+}
+
+/* ---- Retro card surfaces (were .glass): flat paper, ink border, hard shadow ---- */
+.glass {
+  background-color: var(--surface);
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+}
+
+/* Navbar / footer band: opaque surface, no card shadow (border set in markup). */
+.glass-band {
+  background-color: var(--surface);
+}
+
+/* Modal: same card language with a deeper offset shadow. */
+.glass-modal {
+  background-color: var(--surface);
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-modal);
+}
+
+/* Card hover: shift up-left, grow the offset shadow (classic retro lift). */
+.lift {
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.lift:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--retro-shadow);
+}
+
+/* Entrance for toasts / modals. */
+@keyframes float-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-float-in { animation: float-in 0.25s ease both; }
+
+/* Gentle float for the hero cards. */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.floaty { animation: floaty 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .animate-float-in { animation: none; }
+  .floaty { animation: none; }
+  .lift { transition: none; }
+  .lift:hover { transform: none; box-shadow: var(--shadow-card); }
+}

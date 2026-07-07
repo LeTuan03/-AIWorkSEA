@@ -16,7 +16,7 @@ gian thanh toán → rủi ro pháp lý/tranh chấp thấp.
 - **RSS** (`/feed.xml`), `sitemap.xml`, `robots.txt`, favicon, manifest.
 
 **Giao diện / UX**
-- Brand mới: gradient **violet→fuchsia**, khối tối có glow, font display **Space Grotesk** (next/font).
+- Brand **retro / vintage print**: nền giấy ngả vàng, mực nâu, accent **rust**, viền mực 2px + đổ bóng cứng (hard offset), font display máy chữ **Space Mono** (next/font). Style tập trung trong **`app/Retro.css`** (token light + dark), không dùng CSS thuần rời rạc.
 - **Header có menu mobile**, active state; **Toast** thông báo; **modal xác nhận** khi đóng/từ chối/gỡ tin.
 - Skeleton loading cho bảng điều khiển & quản trị; a11y (aria-label, focus ring).
 

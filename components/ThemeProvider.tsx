@@ -2,14 +2,14 @@
 
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 
-// Class-based theming so the CSS-variable tokens in globals.css swap under `.dark`.
-// Dark Premium is the flagship look; light is the pastel variant. A manual toggle
-// lives in the header, and OS preference is still honored.
+// Class-based theming so the CSS-variable tokens in Retro.css swap under `.dark`.
+// Light "aged paper" is the flagship retro look; dark is the night-sepia variant.
+// A manual toggle lives in the header, and OS preference is still honored.
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <NextThemeProvider
       attribute="class"
-      defaultTheme="dark"
+      defaultTheme="light"
       enableSystem
       disableTransitionOnChange
     >
