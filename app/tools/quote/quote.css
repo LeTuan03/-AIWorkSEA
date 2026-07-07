@@ -1,0 +1,29 @@
+/* Print-to-PDF for the quote builder. Loaded only on /tools/quote, so these
+   rules never affect other routes. When printing we drop the site chrome and
+   the editor column, then render the quote document full-width. Uses the
+   browser's own text rendering, so Vietnamese diacritics are always correct. */
+@media print {
+  header,
+  footer,
+  .quote-noprint {
+    display: none !important;
+  }
+
+  .quote-grid {
+    display: block !important;
+  }
+
+  .quote-doc {
+    max-width: none !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+
+  @page {
+    margin: 16mm;
+  }
+}

@@ -21,6 +21,16 @@ const URL_MESSAGES: Record<string, { message: string; type: ToastType }> = {
   rejected: { message: "Đã gỡ tin.", type: "info" },
   featured: { message: "Đã cập nhật trạng thái Nổi bật.", type: "success" },
   copied: { message: "Đã sao chép liên kết.", type: "success" },
+  "profile-saved": { message: "Đã lưu hồ sơ freelancer.", type: "success" },
+  subscribed: {
+    message: "Kiểm tra email để xác nhận đăng ký nhận tin.",
+    type: "success",
+  },
+  confirmed: { message: "Đã xác nhận! Bạn sẽ nhận AI Jobs Digest hằng tuần.", type: "success" },
+  "confirm-failed": { message: "Liên kết xác nhận không hợp lệ hoặc đã hết hạn.", type: "error" },
+  unsubscribed: { message: "Đã hủy đăng ký nhận tin.", type: "info" },
+  tracked: { message: "Đã lưu vào bảng theo dõi ứng tuyển.", type: "success" },
+  "already-tracked": { message: "Việc này đã có trong bảng theo dõi.", type: "info" },
 };
 
 let counter = 0;

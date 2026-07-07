@@ -1,0 +1,22 @@
+name: Weekly AI Jobs Digest
+
+# Sends the newsletter every Monday ~08:00 Vietnam time (01:00 UTC).
+# Requires two repo secrets: SITE_URL (e.g. https://aiworksea.com) and CRON_SECRET
+# (must match the deployed app's CRON_SECRET env var).
+on:
+  schedule:
+    - cron: "0 1 * * 1"
+  workflow_dispatch: {}
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger digest endpoint
+        run: |
+          curl -fsS -X POST "${SITE_URL%/}/api/digest" \
+            -H "x-cron-secret: ${CRON_SECRET}" \
+            -w "\nHTTP %{http_code}\n"
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}

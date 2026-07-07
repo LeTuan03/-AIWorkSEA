@@ -11,7 +11,9 @@ type NavUser = { email: string; role: string } | null;
 
 const links = [
   { href: "/", label: "Việc làm" },
+  { href: "/freelancers", label: "Freelancer" },
   { href: "/companies", label: "Công ty" },
+  { href: "/tools/quote", label: "Công cụ" },
   { href: "/about", label: "Về tôi" },
 ];
 
@@ -48,6 +50,9 @@ export function Nav({ user }: { user: NavUser }) {
         ))}
         {user && (
           <>
+            <Link href="/tracker" className={linkCls("/tracker")}>
+              Theo dõi
+            </Link>
             <Link href="/dashboard" className={linkCls("/dashboard")}>
               Bảng điều khiển
             </Link>
@@ -104,6 +109,9 @@ export function Nav({ user }: { user: NavUser }) {
             ))}
             {user ? (
               <>
+                <Link href="/tracker" className={linkCls("/tracker")}>
+                  Theo dõi
+                </Link>
                 <Link href="/dashboard" className={linkCls("/dashboard")}>
                   Bảng điều khiển
                 </Link>

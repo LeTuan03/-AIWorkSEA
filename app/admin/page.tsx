@@ -40,9 +40,14 @@ export default async function AdminPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="font-display text-2xl font-bold tracking-tight text-fg">
-        Quản trị · Kiểm duyệt
-      </h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="font-display text-2xl font-bold tracking-tight text-fg">
+          Quản trị · Kiểm duyệt
+        </h1>
+        <Link href="/admin/metrics" className="btn btn-secondary">
+          Số liệu & mốc kích hoạt
+        </Link>
+      </div>
 
       {/* Moderation queue */}
       <section className="mt-8">

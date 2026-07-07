@@ -1,24 +1,21 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-type Params = {
-  q?: string;
-  category?: string;
-  location?: string;
-  sort?: string;
-  remote?: boolean;
-};
+type Query = Record<string, string | undefined>;
 
-function buildHref(params: Params, page: number): string {
+function buildHref(
+  basePath: string,
+  query: Query,
+  page: number,
+  hash: string,
+): string {
   const sp = new URLSearchParams();
-  if (params.q) sp.set("q", params.q);
-  if (params.category) sp.set("category", params.category);
-  if (params.location) sp.set("location", params.location);
-  if (params.sort && params.sort !== "newest") sp.set("sort", params.sort);
-  if (params.remote) sp.set("remote", "1");
+  for (const [k, val] of Object.entries(query)) {
+    if (val) sp.set(k, val);
+  }
   if (page > 1) sp.set("page", String(page));
   const qs = sp.toString();
-  return `${qs ? `/?${qs}` : "/"}#jobs`;
+  return `${basePath}${qs ? `?${qs}` : ""}${hash}`;
 }
 
 // Windowed page range: 1 … (p-1) p (p+1) … last
@@ -38,11 +35,15 @@ function pageWindow(page: number, totalPages: number): (number | "…")[] {
 export function Pagination({
   page,
   totalPages,
-  params,
+  basePath = "/",
+  hash = "",
+  query = {},
 }: {
   page: number;
   totalPages: number;
-  params: Params;
+  basePath?: string;
+  hash?: string;
+  query?: Query;
 }) {
   if (totalPages <= 1) return null;
 
@@ -54,7 +55,7 @@ export function Pagination({
   return (
     <nav className="mt-10 flex items-center justify-center gap-1.5" aria-label="Phân trang">
       {page > 1 && (
-        <Link href={buildHref(params, page - 1)} className={outline} aria-label="Trang trước">
+        <Link href={buildHref(basePath, query, page - 1, hash)} className={outline} aria-label="Trang trước">
           <ChevronLeft size={16} strokeWidth={2} />
         </Link>
       )}
@@ -67,7 +68,7 @@ export function Pagination({
         ) : (
           <Link
             key={p}
-            href={buildHref(params, p)}
+            href={buildHref(basePath, query, p, hash)}
             aria-current={p === page ? "page" : undefined}
             className={
               p === page
@@ -81,7 +82,7 @@ export function Pagination({
       )}
 
       {page < totalPages && (
-        <Link href={buildHref(params, page + 1)} className={outline} aria-label="Trang sau">
+        <Link href={buildHref(basePath, query, page + 1, hash)} className={outline} aria-label="Trang sau">
           <ChevronRight size={16} strokeWidth={2} />
         </Link>
       )}

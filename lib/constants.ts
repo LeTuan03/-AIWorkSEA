@@ -108,6 +108,71 @@ export const EMPLOYMENT_TYPES: Record<string, string> = {
   "Project-based": "CONTRACTOR",
 };
 
+// ---- Freelancer profiles (Part A.1) ----
+
+export const AVAILABILITY = ["OPEN", "BUSY", "HIDDEN"] as const;
+export type Availability = (typeof AVAILABILITY)[number];
+
+export const AVAILABILITY_LABELS: Record<string, string> = {
+  OPEN: "Sẵn sàng nhận việc",
+  BUSY: "Đang bận",
+  HIDDEN: "Tạm ẩn hồ sơ",
+};
+
+export function isValidAvailability(v: string): v is Availability {
+  return (AVAILABILITY as readonly string[]).includes(v);
+}
+
+export const VISIBILITY = ["PUBLIC", "UNLISTED"] as const;
+export type Visibility = (typeof VISIBILITY)[number];
+
+export const VISIBILITY_LABELS: Record<string, string> = {
+  PUBLIC: "Công khai (hiện trong danh sách + Google)",
+  UNLISTED: "Ẩn khỏi danh sách (chỉ ai có link mới xem được)",
+};
+
+export function isValidVisibility(v: string): v is Visibility {
+  return (VISIBILITY as readonly string[]).includes(v);
+}
+
+// Lowercase slug for /freelancer/[username].
+export const USERNAME_RE = /^[a-z0-9-]{3,30}$/;
+
+export const PROFILE_LIMITS = {
+  username: 30,
+  displayName: 80,
+  headline: 120,
+  bio: 2000,
+  skills: 300,
+  portfolioUrl: 500,
+  avatarUrl: 500,
+  rateReference: 60,
+  contactEmail: 200,
+  contactPhone: 30,
+} as const;
+
+// ---- Application tracker / mini kanban (Part A.4) ----
+
+export const TRACKER_COLUMNS = [
+  { key: "SENT", label: "Đã gửi" },
+  { key: "TALKING", label: "Đang trao đổi" },
+  { key: "OFFER", label: "Đã nhận" },
+  { key: "REJECTED", label: "Từ chối" },
+] as const;
+
+export type TrackerColumn = (typeof TRACKER_COLUMNS)[number]["key"];
+
+export function isValidColumn(v: string): v is TrackerColumn {
+  return TRACKER_COLUMNS.some((c) => c.key === v);
+}
+
+export const CARD_LIMITS = {
+  title: 200,
+  company: 120,
+  link: 500,
+  notes: 1000,
+} as const;
+
 // Sort options for the job list.
 export const SORTS = [
   { value: "newest", label: "Mới nhất" },

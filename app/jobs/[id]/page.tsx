@@ -1,7 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Star, Wallet, Briefcase, Clock, MapPin, ArrowRight } from "lucide-react";
+import {
+  Star,
+  Wallet,
+  Briefcase,
+  Clock,
+  MapPin,
+  ArrowRight,
+  BookmarkPlus,
+} from "lucide-react";
 import {
   getJob,
   getSimilarJobs,
@@ -14,6 +22,7 @@ import { buildJobPostingJsonLd } from "@/lib/seo";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { JobCard } from "@/components/JobCard";
 import { ShareButtons } from "@/components/ShareButtons";
+import { trackJobAction } from "@/app/tracker/actions";
 
 type Params = { id: string };
 
@@ -185,6 +194,14 @@ export default async function JobDetailPage({
             <p className="mt-3 text-center text-xs text-subtle">
               Ứng tuyển trực tiếp với nhà tuyển dụng
             </p>
+
+            <form action={trackJobAction} className="mt-4">
+              <input type="hidden" name="jobId" value={job.id} />
+              <button type="submit" className="btn btn-secondary w-full">
+                <BookmarkPlus size={16} strokeWidth={1.75} aria-hidden />
+                Lưu vào bảng theo dõi
+              </button>
+            </form>
 
             <Link
               href={companyHref}

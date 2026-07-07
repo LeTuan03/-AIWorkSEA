@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/db";
 import { SITE_URL } from "@/lib/seo";
+import { getPublicProfiles } from "@/lib/profiles";
 
 // Render at request time, not during the build/export step: the sitemap depends
 // on the database, which isn't guaranteed to be reachable while Netlify builds.
@@ -9,7 +10,9 @@ export const dynamic = "force-dynamic";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticUrls: MetadataRoute.Sitemap = [
     { url: SITE_URL, lastModified: new Date(), changeFrequency: "hourly", priority: 1 },
+    { url: `${SITE_URL}/freelancers`, changeFrequency: "daily", priority: 0.7 },
     { url: `${SITE_URL}/companies`, changeFrequency: "daily", priority: 0.6 },
+    { url: `${SITE_URL}/tools/quote`, changeFrequency: "monthly", priority: 0.4 },
     { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.4 },
   ];
 
@@ -43,5 +46,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  return [...staticUrls, ...companyUrls, ...jobUrls];
+  // Public freelancer profiles (excludes UNLISTED / HIDDEN).
+  let profileUrls: MetadataRoute.Sitemap = [];
+  try {
+    const profiles = await getPublicProfiles();
+    profileUrls = profiles.map((p) => ({
+      url: `${SITE_URL}/freelancer/${p.username}`,
+      lastModified: p.updatedAt,
+      changeFrequency: "weekly",
+      priority: 0.6,
+    }));
+  } catch (err) {
+    console.error("sitemap: failed to load freelancer profiles", err);
+  }
+
+  return [...staticUrls, ...companyUrls, ...profileUrls, ...jobUrls];
 }

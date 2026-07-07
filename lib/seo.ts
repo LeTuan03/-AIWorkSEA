@@ -1,8 +1,35 @@
-import type { Job } from "@prisma/client";
+import type { Job, FreelancerProfile } from "@prisma/client";
 import { COUNTRY_CODES, EMPLOYMENT_TYPES } from "@/lib/constants";
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+// schema.org ProfilePage + Person for a public freelancer profile.
+export function buildProfileJsonLd(
+  p: FreelancerProfile,
+): Record<string, unknown> {
+  const skills = p.skills
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const person: Record<string, unknown> = {
+    "@type": "Person",
+    name: p.displayName,
+    url: `${SITE_URL}/freelancer/${p.username}`,
+    ...(p.headline ? { description: p.headline } : {}),
+    ...(p.avatarUrl ? { image: p.avatarUrl } : {}),
+    ...(p.portfolioUrl ? { sameAs: [p.portfolioUrl] } : {}),
+    ...(skills.length ? { knowsAbout: skills } : {}),
+  };
+
+  return {
+    "@context": "https://schema.org/",
+    "@type": "ProfilePage",
+    dateModified: p.updatedAt.toISOString(),
+    mainEntity: person,
+  };
+}
 
 // Build schema.org JobPosting structured data (Google Jobs rich results).
 export function buildJobPostingJsonLd(job: Job): Record<string, unknown> {

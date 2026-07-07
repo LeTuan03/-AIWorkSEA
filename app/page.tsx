@@ -13,6 +13,7 @@ import { CategoryIcon } from "@/components/CategoryIcon";
 import { Filters } from "@/components/Filters";
 import { JobCard } from "@/components/JobCard";
 import { Pagination } from "@/components/Pagination";
+import { NewsletterForm } from "@/components/NewsletterForm";
 
 type SearchParams = {
   q?: string;
@@ -241,12 +242,14 @@ export default async function HomePage({
             <Pagination
               page={page}
               totalPages={totalPages}
-              params={{
+              basePath="/"
+              hash="#jobs"
+              query={{
                 q: params.q,
                 category: params.category,
                 location: params.location,
-                sort: params.sort,
-                remote,
+                sort: params.sort && params.sort !== "newest" ? params.sort : undefined,
+                remote: remote ? "1" : undefined,
               }}
             />
           </>
@@ -288,6 +291,24 @@ export default async function HomePage({
                   <p className="mt-2 text-sm text-muted">{item.body}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Newsletter */}
+      {!isFiltered && (
+        <section className="border-t border-line">
+          <div className="mx-auto max-w-3xl px-4 py-16 text-center">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+              Nhận việc mới qua email
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-muted">
+              AI Jobs Digest — tổng hợp việc AI &amp; Automation mới hằng tuần ở
+              Đông Nam Á. Miễn phí, hủy bất cứ lúc nào.
+            </p>
+            <div className="mx-auto mt-6 max-w-md text-left">
+              <NewsletterForm source="home" />
             </div>
           </div>
         </section>

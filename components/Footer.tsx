@@ -1,10 +1,23 @@
 import Link from "next/link";
+import { NewsletterForm } from "@/components/NewsletterForm";
 
 export function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="mt-20 border-t border-line glass-band">
       <div className="mx-auto max-w-6xl px-4 py-14">
+        <div className="mb-12 flex flex-col gap-4 border-b border-line pb-10 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="font-display text-lg font-bold text-fg">AI Jobs Digest</div>
+            <p className="mt-1 max-w-sm text-sm text-muted">
+              Việc AI &amp; Automation mới mỗi tuần, gửi thẳng vào email. Miễn phí.
+            </p>
+          </div>
+          <div className="w-full sm:max-w-sm">
+            <NewsletterForm source="footer" compact />
+          </div>
+        </div>
+
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           <div className="col-span-2 sm:col-span-1">
             <div className="flex items-center gap-2">
@@ -21,10 +34,12 @@ export function Footer() {
           </div>
 
           <FooterCol
-            title="Ứng viên"
+            title="Freelancer"
             items={[
               { href: "/", label: "Tìm việc" },
-              { href: "/companies", label: "Công ty" },
+              { href: "/freelancers", label: "Freelancer" },
+              { href: "/freelancer/edit", label: "Tạo hồ sơ" },
+              { href: "/tools/quote", label: "Tạo báo giá" },
               { href: "/feed.xml", label: "RSS", external: true },
             ]}
           />

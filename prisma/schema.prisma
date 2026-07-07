@@ -27,7 +27,12 @@ model User {
 
   createdAt DateTime @default(now())
 
-  jobs Job[]
+  jobs     Job[]
+  // Part A relations (all share this one account — no separate logins per tool).
+  profile  FreelancerProfile?
+  quotes   Quote[]
+  cards    ApplicationCard[]
+  payments Payment[]
 
   @@index([role])
 }
@@ -60,12 +65,19 @@ model Job {
   // Monetization: featured posts float to the top. Admin-gated only.
   featured Boolean @default(false)
 
+  // Part B monetization hooks — default "free", flip UI on when triggers hit.
+  plan      String    @default("FREE") // "FREE" | "PAID_30" | "PAID_60"
+  expiresAt DateTime?
+
   // Moderation: new posts start PENDING and require admin approval.
   status String @default("PENDING") // "PENDING" | "PUBLISHED" | "CLOSED"
 
   // Owner of the listing (the recruiter who posted it).
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  // Application-tracker cards auto-created when a freelancer applies on-platform.
+  cards ApplicationCard[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -76,4 +88,140 @@ model Job {
   @@index([createdAt])
   @@index([status])
   @@index([userId])
+}
+
+// ---------------------------------------------------------------------------
+// PART A — free freelancer features (see Urdaiworksea.md Phần D). Monetization
+// fields default to free/open; Part B just flips UI without a schema change.
+// ---------------------------------------------------------------------------
+
+// A.1 — public freelancer profile (1:1 with a User; a user can be both a
+// recruiter posting jobs and a freelancer with a profile).
+model FreelancerProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  username      String  @unique // URL slug for /freelancer/[username]
+  displayName   String
+  avatarUrl     String?
+  headline      String? // one-line pitch
+  bio           String
+  skills        String // comma-separated, same convention as Job.skills
+  portfolioUrl  String?
+  rateReference String? // e.g. "500k-1tr/dự án"
+
+  contactEmail String?
+  contactPhone String?
+
+  // Part B hooks — default open/free; gate/boost later without a schema change.
+  availability String  @default("OPEN") // "OPEN" | "BUSY" | "HIDDEN"
+  visibility   String  @default("PUBLIC") // "PUBLIC" | "UNLISTED"
+  isFeatured   Boolean @default(false) // future: employer-paid profile boost
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([availability])
+  @@index([isFeatured])
+}
+
+// A.2 — newsletter subscribers (double opt-in) + a per-send audit log.
+model Subscriber {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  status       String    @default("PENDING") // "PENDING" | "CONFIRMED" | "UNSUBSCRIBED"
+  confirmToken String?   @unique
+  unsubToken   String    @unique @default(cuid())
+  source       String? // "home" | "footer" | "job-page"
+  createdAt    DateTime  @default(now())
+  confirmedAt  DateTime?
+
+  @@index([status])
+}
+
+model DigestLog {
+  id         String   @id @default(cuid())
+  sentAt     DateTime @default(now())
+  jobCount   Int
+  recipients Int
+  subject    String
+}
+
+// A.3 — quotes/proposals. userId nullable so guests can build one (localStorage)
+// and only persist once signed in.
+model Quote {
+  id     String  @id @default(cuid())
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  clientName String
+  currency   String  @default("VND")
+  taxRate    Float?  @default(0) // percent
+  discount   Float?  @default(0) // percent
+  notes      String?
+  total      Int // computed, cached
+  publicSlug String? @unique // share link /quote/[slug]
+
+  items     QuoteItem[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([userId])
+}
+
+model QuoteItem {
+  id        String @id @default(cuid())
+  quoteId   String
+  quote     Quote  @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  label     String
+  unitPrice Int
+  quantity  Int    @default(1)
+  order     Int    @default(0)
+
+  @@index([quoteId])
+}
+
+// A.4 — application-tracker (mini kanban) cards.
+model ApplicationCard {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  jobId String? // set when auto-created from an on-platform apply
+  job   Job?    @relation(fields: [jobId], references: [id], onDelete: SetNull)
+
+  title          String // snapshot of the job title
+  company        String?
+  link           String?
+  notes          String?
+  column         String    @default("SENT") // "SENT" | "TALKING" | "OFFER" | "REJECTED"
+  order          Int       @default(0) // position within the column
+  nextFollowUpAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, column])
+}
+
+// Part B — shared payment ledger. Nothing charges yet; rows are created only
+// once monetization UI is switched on.
+model Payment {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  purpose   String // "JOB_POST" | "FEATURED" | "PROFILE_ACCESS" | "SUBSCRIPTION"
+  refId     String? // e.g. Job.id being paid for
+  amount    Int
+  currency  String    @default("VND")
+  method    String    @default("BANK_QR") // "BANK_QR" | "MOMO" | "GATEWAY"
+  status    String    @default("PENDING") // "PENDING" | "PAID" | "FAILED" | "REFUNDED"
+  reference String? // transfer memo / gateway txn id
+  paidAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([status])
+  @@index([purpose])
 }
