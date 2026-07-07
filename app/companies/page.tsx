@@ -2,6 +2,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getCompanies } from "@/lib/jobs";
 
+// Live company data; render per-request so the build doesn't depend on the
+// database being reachable during the export step.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Nhà tuyển dụng",
   description:

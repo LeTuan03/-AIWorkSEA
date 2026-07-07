@@ -3,6 +3,11 @@
 
 generator client {
   provider = "prisma-client-js"
+  // Build runs on Netlify's Ubuntu image (debian-openssl-3.0.x); the deployed
+  // Next.js runtime runs as AWS Lambda functions (rhel-openssl-3.0.x). Include
+  // both so the query engine is present at build/export AND at request time,
+  // plus "native" for local dev.
+  binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x"]
 }
 
 datasource db {

@@ -5,7 +5,8 @@
   "description": "Job board chuyên tuyển freelancer AI/Automation ở Đông Nam Á",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
     "start": "next start",
     "lint": "next lint",
     "db:migrate": "prisma migrate dev",
