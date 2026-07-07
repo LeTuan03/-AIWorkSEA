@@ -12,7 +12,7 @@ export async function Header() {
         <Link
           href="/"
           aria-label="AIWork SEA, trang chủ"
-          className="flex items-center gap-2.5 rounded-xl"
+          className="flex shrink-0 items-center gap-2.5 rounded-xl"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-bold text-accent-solid-fg">
             <img

@@ -30,7 +30,7 @@ export function Nav({ user }: { user: NavUser }) {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   const linkCls = (href: string) =>
-    `rounded-xl px-3 py-2 text-sm font-medium transition ${
+    `whitespace-nowrap rounded-xl px-3 py-2 text-sm font-medium transition ${
       isActive(href)
         ? "bg-accent-weak text-accent-weak-fg"
         : "text-muted hover:bg-surface-2 hover:text-fg"
@@ -41,32 +41,41 @@ export function Nav({ user }: { user: NavUser }) {
 
   return (
     <>
-      {/* Desktop: centered menu ([Logo] [Menu Center] [CTA], §7) */}
-      <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex">
-        {links.map((l) => (
-          <Link key={l.href} href={l.href} className={linkCls(l.href)}>
-            {l.label}
-          </Link>
-        ))}
-        {user && (
-          <>
-            <Link href="/tracker" className={linkCls("/tracker")}>
-              Theo dõi
+      {/*
+        Desktop: centered menu ([Logo] [Menu Center] [CTA], §7).
+        In-flow (flex-1) so it can never overlap the logo/CTA — the inner
+        w-max row is mx-auto-centered when there's room, and the nav scrolls
+        horizontally as a graceful fallback when there are many links (e.g. an
+        ADMIN gets up to 8). Collapses to the mobile menu below lg where the
+        full row would no longer fit.
+      */}
+      <nav className="no-scrollbar hidden min-w-0 flex-1 overflow-x-auto lg:block">
+        <div className="mx-auto flex w-max items-center gap-1">
+          {links.map((l) => (
+            <Link key={l.href} href={l.href} className={linkCls(l.href)}>
+              {l.label}
             </Link>
-            <Link href="/dashboard" className={linkCls("/dashboard")}>
-              Bảng điều khiển
-            </Link>
-            {user.role === "ADMIN" && (
-              <Link href="/admin" className={linkCls("/admin")}>
-                Quản trị
+          ))}
+          {user && (
+            <>
+              <Link href="/tracker" className={linkCls("/tracker")}>
+                Theo dõi
               </Link>
-            )}
-          </>
-        )}
+              <Link href="/dashboard" className={linkCls("/dashboard")}>
+                Bảng điều khiển
+              </Link>
+              {user.role === "ADMIN" && (
+                <Link href="/admin" className={linkCls("/admin")}>
+                  Quản trị
+                </Link>
+              )}
+            </>
+          )}
+        </div>
       </nav>
 
       {/* Desktop: right actions (CTA + toggle) */}
-      <div className="hidden items-center gap-2 md:flex">
+      <div className="hidden shrink-0 items-center gap-2 lg:flex">
         {user ? (
           <form action={signOutAction}>
             <button type="submit" title={user.email} className={ghostCls}>
@@ -85,7 +94,7 @@ export function Nav({ user }: { user: NavUser }) {
       </div>
 
       {/* Mobile controls */}
-      <div className="flex items-center gap-1 md:hidden">
+      <div className="flex items-center gap-1 lg:hidden">
         <ThemeToggle />
         <button
           type="button"
@@ -100,7 +109,7 @@ export function Nav({ user }: { user: NavUser }) {
 
       {/* Mobile panel */}
       {open && (
-        <div className="absolute inset-x-0 top-full border-b border-line glass-band p-3 shadow-lg shadow-black/5 md:hidden">
+        <div className="absolute inset-x-0 top-full border-b border-line glass-band p-3 shadow-lg shadow-black/5 lg:hidden">
           <div className="flex flex-col gap-1">
             {links.map((l) => (
               <Link key={l.href} href={l.href} className={linkCls(l.href)}>

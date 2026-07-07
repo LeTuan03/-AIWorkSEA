@@ -275,6 +275,15 @@ select.field option:checked {
   background-color: var(--surface);
 }
 
+/* Scrollable container with the scrollbar hidden (used by the desktop nav so a
+   crowded menu can scroll horizontally without showing a bar). */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chromium / Safari */
+}
+
 /* Modal: same card language with a deeper offset shadow. */
 .glass-modal {
   background-color: var(--surface);
