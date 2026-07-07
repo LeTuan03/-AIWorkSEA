@@ -39,6 +39,7 @@ export function Footer() {
           <FooterCol
             title="Khác"
             items={[
+              { href: "/about", label: "Về tôi" },
               { href: "/#how", label: "Cách hoạt động" },
               { href: "/login", label: "Đăng nhập" },
             ]}
@@ -46,7 +47,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t border-line pt-6 text-xs text-subtle">
-          © {year} AIWork SEA. Bản MVP, dữ liệu hiển thị là mẫu.
+          © {year} AIWork SEA. Tuandev03
         </div>
       </div>
     </footer>

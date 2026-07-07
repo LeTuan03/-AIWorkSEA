@@ -10,6 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticUrls: MetadataRoute.Sitemap = [
     { url: SITE_URL, lastModified: new Date(), changeFrequency: "hourly", priority: 1 },
     { url: `${SITE_URL}/companies`, changeFrequency: "daily", priority: 0.6 },
+    { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.4 },
   ];
 
   let jobs: { id: string; updatedAt: Date; company: string }[] = [];

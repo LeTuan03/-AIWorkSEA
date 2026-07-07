@@ -12,6 +12,7 @@ type NavUser = { email: string; role: string } | null;
 const links = [
   { href: "/", label: "Việc làm" },
   { href: "/companies", label: "Công ty" },
+  { href: "/about", label: "Về tôi" },
 ];
 
 export function Nav({ user }: { user: NavUser }) {
