@@ -65,15 +65,16 @@ export default async function HomePage({
           <div>
             <span className="chip chip-accent">
               <Globe size={14} strokeWidth={1.75} />
-              Đông Nam Á · AI &amp; Automation
+              AI Jobs & Freelance
             </span>
+
             <h1 className="font-display mt-6 text-5xl font-bold leading-[1.03] tracking-tight text-fg sm:text-6xl lg:text-7xl">
-              Tuyển &amp; tìm freelancer{" "}
-              <span className="text-accent">AI &amp; Automation</span>
+              Kết nối doanh nghiệp với{" "}
+              <span className="text-accent">AI Freelancer</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-muted">
-              Job board ngách cho dự án AI, Machine Learning, LLM và tự động hóa ở
-              Đông Nam Á. Remote, contract, part-time.
+              Nền tảng tuyển dụng dành riêng cho AI, Machine Learning, LLM, Automation và Data.
+              Tìm việc freelance, remote hoặc contract nhanh chóng.
             </p>
 
             {/* Search (primary action) */}
@@ -304,8 +305,8 @@ export default async function HomePage({
               Nhận việc mới qua email
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-muted">
-              AI Jobs Digest — tổng hợp việc AI &amp; Automation mới hằng tuần ở
-              Đông Nam Á. Miễn phí, hủy bất cứ lúc nào.
+              AI Jobs Digest — tổng hợp việc AI &amp; Automation mới hằng tuần.
+              Miễn phí, hủy bất cứ lúc nào.
             </p>
             <div className="mx-auto mt-6 max-w-md text-left">
               <NewsletterForm source="home" />
