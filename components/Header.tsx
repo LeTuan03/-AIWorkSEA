@@ -14,8 +14,12 @@ export async function Header() {
           aria-label="AIWork SEA, trang chủ"
           className="flex items-center gap-2.5 rounded-xl"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-solid text-sm font-bold text-accent-solid-fg">
-            AI
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-bold text-accent-solid-fg">
+            <img
+              src="/icon.jpg"
+              alt="AIWork SEA Logo"
+              className="h-full w-full object-cover"
+            />
           </span>
           <span className="font-display text-lg font-bold tracking-tight text-fg">
             AIWork<span className="text-accent">SEA</span>
