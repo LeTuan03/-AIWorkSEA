@@ -306,6 +306,28 @@ select.field option:checked {
 }
 .floaty { animation: floaty 6s ease-in-out infinite; }
 
+/* ---- Global navigation progress bar (top of viewport) ---- */
+.nav-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.nav-progress[data-visible="true"] {
+  opacity: 1;
+  transition: opacity 0.1s ease;
+}
+.nav-progress-bar {
+  height: 100%;
+  width: 0;
+  background: var(--accent-solid);
+  box-shadow: 1px 0 0 var(--accent-solid), 0 1px 0 var(--retro-shadow);
+  transition: width 0.2s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .animate-float-in { animation: none; }

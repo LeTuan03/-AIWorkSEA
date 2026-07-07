@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/Toast";
+import { NavigationProgress } from "@/components/NavigationProgress";
 import { SITE_URL } from "@/lib/seo";
 
 const geist = Geist({
@@ -73,6 +74,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-[100dvh] flex-col">
         <ThemeProvider>
+          <NavigationProgress />
           <Toaster />
           <Header />
           <main className="flex-1">{children}</main>
