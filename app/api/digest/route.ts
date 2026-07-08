@@ -1,5 +1,7 @@
+import { timingSafeEqual } from "node:crypto";
 import type { Job } from "@prisma/client";
 import { prisma } from "@/lib/db";
+import { rateLimit } from "@/lib/rate-limit";
 import { sendEmail } from "@/lib/email";
 import { formatBudget } from "@/lib/jobs";
 import { LOCATION_LABELS } from "@/lib/constants";
@@ -45,13 +47,24 @@ function buildHtml(jobsHtml: string, count: number, unsubLink: string): string {
   </div>`;
 }
 
+// Constant-time comparison so the secret can't be probed via response timing.
+function safeEqual(a: string, b: string): boolean {
+  const ab = Buffer.from(a);
+  const bb = Buffer.from(b);
+  return ab.length === bb.length && timingSafeEqual(ab, bb);
+}
+
 export async function POST(request: Request) {
   const secret = process.env.CRON_SECRET;
   if (!secret) {
     return Response.json({ error: "CRON_SECRET not configured" }, { status: 503 });
   }
-  if (request.headers.get("x-cron-secret") !== secret) {
+  if (!safeEqual(request.headers.get("x-cron-secret") ?? "", secret)) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  // The cron fires weekly; even with a leaked secret this bounds email blasts.
+  if (!rateLimit("digest-send", 2, 60 * 60_000)) {
+    return Response.json({ error: "Too many digest runs" }, { status: 429 });
   }
 
   const jobs = await getRecentJobsForDigest(7);

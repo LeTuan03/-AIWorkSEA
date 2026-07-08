@@ -1,4 +1,4 @@
-# AIWork SEA
+# AIWORK SEA
 
 Job board ngách cho freelancer **AI & Automation** ở **Đông Nam Á**.
 

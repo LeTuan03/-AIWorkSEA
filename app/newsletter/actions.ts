@@ -1,7 +1,7 @@
 "use server";
 
-import { headers } from "next/headers";
 import { rateLimit } from "@/lib/rate-limit";
+import { clientIp } from "@/lib/request";
 import { sendEmail } from "@/lib/email";
 import { recordEvent } from "@/lib/analytics";
 import {
@@ -12,12 +12,8 @@ import {
 
 export type NewsletterState = { ok?: boolean; error?: string; message?: string };
 
-async function clientIp(): Promise<string> {
-  const h = await headers();
-  const fwd = h.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
-  return h.get("x-real-ip") ?? "unknown";
-}
+// Matches the Subscriber.source values documented in the schema.
+const SOURCES = new Set(["home", "footer", "job-page"]);
 
 export async function subscribeAction(
   _prev: NewsletterState,
@@ -29,7 +25,8 @@ export async function subscribeAction(
   }
 
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
-  const source = String(formData.get("source") ?? "home").slice(0, 20);
+  const rawSource = String(formData.get("source") ?? "home");
+  const source = SOURCES.has(rawSource) ? rawSource : "home";
 
   if (!email || !EMAIL_RE.test(email) || email.length > 200) {
     return { error: "Email không hợp lệ." };

@@ -6,7 +6,7 @@ import { loadOgFonts } from "@/lib/og";
 // Per-job social share card. Shared job links are the money page for a job
 // board, so the card carries the concrete title / company / budget.
 
-export const alt = "Việc làm trên AIWork SEA";
+export const alt = "Việc làm trên AIWORK SEA";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -19,7 +19,7 @@ export default async function JobOgImage({
   const { id } = await params;
   const job = await getJob(id);
 
-  const title = job?.status === "PUBLISHED" ? job.title : "AIWork SEA";
+  const title = job?.status === "PUBLISHED" ? job.title : "AIWORK SEA";
   const company = job?.company ?? "Việc làm freelancer AI & Automation";
   const location = job ? LOCATION_LABELS[job.location] ?? job.location : "";
   const budget = job ? formatBudget(job) : "";

@@ -1,4 +1,4 @@
-// Prisma schema for AIWork SEA — job board for AI/Automation freelancers.
+// Prisma schema for AIWORK SEA — job board for AI/Automation freelancers.
 // Production database: PostgreSQL.
 
 generator client {
@@ -91,7 +91,7 @@ model Job {
 }
 
 // ---------------------------------------------------------------------------
-// PART A — free freelancer features (see Urdaiworksea.md Phần D). Monetization
+// PART A — free freelancer features (see UrdAIWORKSEA.md Phần D). Monetization
 // fields default to free/open; Part B just flips UI without a schema change.
 // ---------------------------------------------------------------------------
 

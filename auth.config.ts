@@ -5,7 +5,8 @@ import type { NextAuthConfig } from "next-auth";
 // provider (which needs Prisma + bcrypt) is added in auth.ts for the Node
 // runtime only.
 export const authConfig = {
-  session: { strategy: "jwt" },
+  // 30-day sessions; without maxAge the JWT default would apply implicitly.
+  session: { strategy: "jwt", maxAge: 30 * 24 * 60 * 60 },
   pages: { signIn: "/login" },
   trustHost: true,
   providers: [],

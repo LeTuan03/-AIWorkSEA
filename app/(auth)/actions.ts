@@ -1,26 +1,23 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 import { AuthError } from "next-auth";
+import { Prisma } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { signIn, signOut } from "@/auth";
 import { prisma } from "@/lib/db";
 import { rateLimit } from "@/lib/rate-limit";
+import { clientIp } from "@/lib/request";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// bcrypt only hashes the first 72 bytes; longer input is silently truncated.
+const PASSWORD_MAX = 72;
 
 export type AuthState = {
   error?: string;
   values?: { email?: string; name?: string };
 };
-
-async function clientIp(): Promise<string> {
-  const h = await headers();
-  const fwd = h.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
-  return h.get("x-real-ip") ?? "unknown";
-}
 
 // Only allow internal relative paths as post-login redirect targets.
 function safeCallback(url: string | null | undefined): string {
@@ -43,6 +40,9 @@ export async function loginAction(
 
   if (!email || !password) {
     return { error: "Vui lòng nhập email và mật khẩu.", values: { email } };
+  }
+  if (password.length > PASSWORD_MAX) {
+    return { error: "Email hoặc mật khẩu không đúng.", values: { email } };
   }
 
   const ip = await clientIp();
@@ -86,6 +86,9 @@ export async function signupAction(
   if (password.length < 8) {
     return { error: "Mật khẩu tối thiểu 8 ký tự.", values };
   }
+  if (password.length > PASSWORD_MAX) {
+    return { error: `Mật khẩu tối đa ${PASSWORD_MAX} ký tự.`, values };
+  }
 
   const ip = await clientIp();
   if (!rateLimit(`signup:${ip}`, 5, 60 * 60_000)) {
@@ -98,9 +101,21 @@ export async function signupAction(
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  await prisma.user.create({
-    data: { email, name: name || null, passwordHash, role: "USER" },
-  });
+  try {
+    await prisma.user.create({
+      data: { email, name: name || null, passwordHash, role: "USER" },
+    });
+  } catch (error) {
+    // Two concurrent signups can pass the findUnique check; the unique
+    // constraint is the source of truth.
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return { error: "Email đã được đăng ký.", values };
+    }
+    throw error;
+  }
 
   try {
     await signIn("credentials", { email, password, redirectTo: "/dashboard" });

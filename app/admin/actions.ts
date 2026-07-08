@@ -35,7 +35,7 @@ async function notifyOwner(job: Job, approved: boolean): Promise<void> {
     ? `
       <div style="font-family:system-ui,-apple-system,sans-serif;max-width:520px;margin:auto;color:#2b2320">
         <h2 style="color:#a8331a">Tin của bạn đã được duyệt</h2>
-        <p><strong>${esc(job.title)}</strong> hiện đã hiển thị công khai trên AIWork SEA và xuất hiện trong kết quả tìm kiếm, newsletter hằng tuần.</p>
+        <p><strong>${esc(job.title)}</strong> hiện đã hiển thị công khai trên AIWORK SEA và xuất hiện trong kết quả tìm kiếm, newsletter hằng tuần.</p>
         <p style="margin:24px 0">
           <a href="${jobUrl}" style="background:#b23a1e;color:#f7f1de;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:600">Xem tin của bạn</a>
         </p>

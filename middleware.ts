@@ -12,7 +12,11 @@ export default auth((req) => {
 
   const needsAdmin = path.startsWith("/admin");
   const needsAuth =
-    needsAdmin || path.startsWith("/post") || path.startsWith("/dashboard");
+    needsAdmin ||
+    path.startsWith("/post") ||
+    path.startsWith("/dashboard") ||
+    path.startsWith("/tracker") ||
+    path.startsWith("/freelancer/edit");
 
   if (needsAuth && !isLoggedIn) {
     const url = new URL("/login", nextUrl);
@@ -28,5 +32,11 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/post/:path*", "/dashboard/:path*", "/admin/:path*"],
+  matcher: [
+    "/post/:path*",
+    "/dashboard/:path*",
+    "/admin/:path*",
+    "/tracker/:path*",
+    "/freelancer/edit",
+  ],
 };

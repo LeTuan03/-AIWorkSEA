@@ -2,9 +2,9 @@ import type { Job, FreelancerProfile } from "@prisma/client";
 import { COUNTRY_CODES, EMPLOYMENT_TYPES } from "@/lib/constants";
 
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://aiworksea.netlify.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://AIWORKSEA.netlify.app";
 
-export const SITE_NAME = "AIWork SEA";
+export const SITE_NAME = "AIWORK SEA";
 export const SITE_DESCRIPTION =
   "Job board chuyên tuyển freelancer AI, Machine Learning và Automation ở Đông Nam Á.";
 

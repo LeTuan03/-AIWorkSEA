@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Nhà tuyển dụng",
   description:
-    "Các công ty đang tuyển freelancer AI & Automation ở Đông Nam Á trên AIWork SEA.",
+    "Các công ty đang tuyển freelancer AI & Automation ở Đông Nam Á trên AIWORK SEA.",
   alternates: { canonical: "/companies" },
 };
 

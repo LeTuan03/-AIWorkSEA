@@ -25,7 +25,7 @@ export function Footer() {
                 AI
               </span>
               <span className="font-display font-bold text-fg">
-                AIWork<span className="text-accent">SEA</span>
+                AIWORK<span className="text-accent">SEA</span>
               </span>
             </div>
             <p className="mt-3 max-w-xs text-sm text-muted">
@@ -73,7 +73,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t border-line pt-6 text-xs text-subtle">
-          © {year} AIWork SEA. Tuandev03
+          © {year} AIWORK SEA. Tuandev03
         </div>
       </div>
     </footer>

@@ -23,10 +23,10 @@ const profile = {
   github: "https://github.com/LeTuan03",
   available: "Đang nhận dự án freelance & hợp tác",
   tagline:
-    "Mình xây sản phẩm web và tự động hóa cho các dự án AI ở Đông Nam Á — trong đó có chính AIWork SEA.",
+    "Mình xây sản phẩm web và tự động hóa cho các dự án AI ở Đông Nam Á — trong đó có chính AIWORK SEA.",
   bio: [
     "Xin chào, mình là Tuấn. Mình là lập trình viên tập trung vào web hiện đại (Next.js, React, TypeScript) và các luồng tự động hóa dựa trên AI/LLM.",
-    "AIWork SEA là dự án cá nhân của mình: một job board ngách kết nối freelancer AI & Automation với nhà tuyển dụng trong khu vực. Mình tự thiết kế, code và vận hành toàn bộ từ giao diện đến hạ tầng.",
+    "AIWORK SEA là dự án cá nhân của mình: một job board ngách kết nối freelancer AI & Automation với nhà tuyển dụng trong khu vực. Mình tự thiết kế, code và vận hành toàn bộ từ giao diện đến hạ tầng.",
     "Mình thích những sản phẩm gọn, nhanh và dùng được ngay — ít trung gian, ít ma sát. Nếu bạn có dự án AI hoặc automation cần người triển khai, cứ liên hệ nhé.",
   ],
   focuses: [
@@ -69,7 +69,7 @@ const profile = {
 
 export const metadata: Metadata = {
   title: "Về tôi",
-  description: `${profile.name} — ${profile.role}. Người xây dựng AIWork SEA.`,
+  description: `${profile.name} — ${profile.role}. Người xây dựng AIWORK SEA.`,
   alternates: { canonical: "/about" },
   openGraph: {
     title: `Về tôi · ${profile.name}`,

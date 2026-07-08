@@ -210,8 +210,8 @@ const jobs: SeedJob[] = [
 ];
 
 // Demo accounts (documented in README). Change/remove before production.
-const ADMIN = { email: "admin@aiworksea.local", name: "Admin", password: "admin123456" };
-const RECRUITER = { email: "demo@aiworksea.local", name: "Demo Recruiter", password: "demo123456" };
+const ADMIN = { email: "admin@AIWORKSEA.local", name: "Admin", password: "admin123456" };
+const RECRUITER = { email: "demo@AIWORKSEA.local", name: "Demo Recruiter", password: "demo123456" };
 
 async function main() {
   console.log("🌱 Seeding database...");

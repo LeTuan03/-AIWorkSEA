@@ -35,7 +35,7 @@ export default function LandingIndexPage() {
       </h1>
       <p className="mt-3 max-w-2xl text-muted">
         Chọn đúng ngách của bạn: mỗi danh mục là một trang riêng, cập nhật theo
-        tin đăng thật trên AIWork SEA.
+        tin đăng thật trên AIWORK SEA.
       </p>
 
       {GROUPS.map((group) => {

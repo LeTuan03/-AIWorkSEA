@@ -11,18 +11,20 @@ export async function Header() {
       <div className="relative mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4">
         <Link
           href="/"
-          aria-label="AIWork SEA, trang chủ"
+          aria-label="AIWORK SEA, trang chủ"
           className="flex shrink-0 items-center gap-2.5 rounded-xl"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-bold text-accent-solid-fg">
+            {/* Static SVG logo: next/image adds nothing for SVGs, plain img is fine. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/icon.svg"
-              alt="AIWork SEA Logo"
+              alt="AIWORK SEA Logo"
               className="h-full w-full object-cover"
             />
           </span>
           <span className="font-display text-lg font-bold tracking-tight text-fg">
-            AIWork<span className="text-accent">SEA</span>
+            AIWORK<span className="text-accent">SEA</span>
           </span>
         </Link>
 

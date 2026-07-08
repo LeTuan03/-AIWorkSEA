@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser, requireUser } from "@/lib/session";
 import { rateLimit } from "@/lib/rate-limit";
+import { clientIp } from "@/lib/request";
 import { isValidColumn, CARD_LIMITS } from "@/lib/constants";
 import {
   createCard,
@@ -82,6 +83,10 @@ export async function moveCardAction(
 export async function applyClickAction(
   jobId: string,
 ): Promise<{ tracked: boolean }> {
+  // Guests can call this; cap per IP so the Event table can't be flooded.
+  const ip = await clientIp();
+  if (!rateLimit(`apply-click:${ip}`, 30, 60_000)) return { tracked: false };
+
   const job = await getJob(jobId);
   if (!job || job.status !== "PUBLISHED") return { tracked: false };
 

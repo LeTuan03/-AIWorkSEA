@@ -27,8 +27,8 @@ const spaceMono = Space_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "AIWork SEA · Việc làm freelancer AI & Automation ở Đông Nam Á",
-    template: "%s · AIWork SEA",
+    default: "AIWORK SEA · Việc làm freelancer AI & Automation ở Đông Nam Á",
+    template: "%s · AIWORK SEA",
   },
   description:
     "Job board chuyên tuyển freelancer AI, Machine Learning và Automation ở Đông Nam Á. Tìm dự án remote, contract và part-time.",
@@ -44,17 +44,17 @@ export const metadata: Metadata = {
     google: "qugqN4Pfqv8re0526S67cOlEColV-NRq9aTdt0agAG8",
   },
   openGraph: {
-    title: "AIWork SEA",
+    title: "AIWORK SEA",
     description:
       "Việc làm freelancer AI & Automation ở Đông Nam Á: remote, contract, part-time.",
     type: "website",
     url: SITE_URL,
-    siteName: "AIWork SEA",
+    siteName: "AIWORK SEA",
     locale: "vi_VN",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AIWork SEA",
+    title: "AIWORK SEA",
     description:
       "Việc làm freelancer AI & Automation ở Đông Nam Á: remote, contract, part-time.",
   },

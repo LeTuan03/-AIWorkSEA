@@ -1,8 +1,8 @@
-# CONFIG — AIWork SEA (Phần A: Freelancer features)
+# CONFIG — AIWORK SEA (Phần A: Freelancer features)
 
 Hướng dẫn cấu hình để chạy toàn bộ tính năng Phần A (hồ sơ freelancer, báo giá,
 kanban theo dõi ứng tuyển, newsletter). Bám sát code đã build — xem roadmap ở
-[Urdaiworksea.md](./Urdaiworksea.md).
+[UrdAIWORKSEA.md](./UrdAIWORKSEA.md).
 
 > **Nguyên tắc:** app **degrade an toàn**. Thiếu key newsletter/analytics vẫn chạy
 > bình thường, chỉ tắt phần liên quan (chi tiết ở [§6](#6-ma-trận-tính-năng--config)).
@@ -39,9 +39,9 @@ Copy `.env.example` → `.env` rồi điền. Bảng dưới liệt kê **tất 
 | `DATABASE_URL` | ✅ | Mọi truy vấn DB (runtime) | Supabase → Settings → Database → Connection string, **transaction pooler** (port `6543`, có `?pgbouncer=true`) |
 | `DIRECT_URL` | ✅ | `prisma migrate` (không pool) | Cùng nơi, **session pooler** (port `5432`) |
 | `AUTH_SECRET` | ✅ | Ký session (Auth.js) | `openssl rand -base64 32` |
-| `NEXT_PUBLIC_SITE_URL` | ✅ | Canonical, sitemap, link trong email | VD `http://localhost:3000` (local) / `https://aiworksea.com` (prod) |
+| `NEXT_PUBLIC_SITE_URL` | ✅ | Canonical, sitemap, link trong email | VD `http://localhost:3000` (local) / `https://AIWORKSEA.com` (prod) |
 | `RESEND_API_KEY` | ⬜ | Gửi email newsletter | [resend.com](https://resend.com) → API Keys. **Trống = không gửi, chỉ log link xác nhận ra console** |
-| `RESEND_FROM` | ⬜ | Địa chỉ gửi | VD `AIWork SEA <digest@yourdomain.com>`. Trống = dùng `onboarding@resend.dev` |
+| `RESEND_FROM` | ⬜ | Địa chỉ gửi | VD `AIWORK SEA <digest@yourdomain.com>`. Trống = dùng `onboarding@resend.dev` |
 | `CRON_SECRET` | ⬜ | Bảo vệ endpoint `/api/digest` | `openssl rand -base64 32`. **Trống = endpoint trả 503, không gửi digest** |
 | `SEPAY_WEBHOOK_SECRET` | ⬜ | Thanh toán (Phần B, **chưa bật**) | Để trống tới M5 |
 
@@ -103,7 +103,7 @@ App gọi Resend qua REST (`fetch`) — **không cần cài SDK**.
 
 1. Tạo tài khoản [resend.com](https://resend.com), lấy **API Key** → `RESEND_API_KEY`.
 2. Xác thực domain gửi (thêm bản ghi **SPF + DKIM** Resend cung cấp vào DNS) rồi đặt
-   `RESEND_FROM="AIWork SEA <digest@yourdomain.com>"`. Chưa có domain thì bỏ trống
+   `RESEND_FROM="AIWORK SEA <digest@yourdomain.com>"`. Chưa có domain thì bỏ trống
    (dùng `onboarding@resend.dev` để test).
 3. **Không set key vẫn test được luồng double opt-in:** app bỏ qua bước gửi và
    **in link xác nhận ra console** (`[newsletter] confirm link for ...`).
@@ -118,7 +118,7 @@ job 7 ngày cho subscriber đã `CONFIRMED`, ghi log vào bảng `DigestLog`.
 
 1. Đặt `CRON_SECRET` trong env của app (Netlify).
 2. Trong GitHub repo → **Settings → Secrets and variables → Actions** thêm 2 secret:
-   - `SITE_URL` = URL production (vd `https://aiworksea.com`)
+   - `SITE_URL` = URL production (vd `https://AIWORKSEA.com`)
    - `CRON_SECRET` = **đúng bằng** giá trị env app
 3. Workflow [.github/workflows/digest.yml](.github/workflows/digest.yml) chạy **Thứ 2 ~08:00 VN**
    (01:00 UTC). Chạy tay để test: tab **Actions → Weekly AI Jobs Digest → Run workflow**.

@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 
-// KPI layer for the Part B monetization triggers (see Urdaiworksea.md Phần F).
+// KPI layer for the Part B monetization triggers (see UrdAIWORKSEA.md Phần F).
 // Every threshold in the roadmap keys off one of these numbers, so they live in
 // one place and are surfaced on /admin/metrics.
 

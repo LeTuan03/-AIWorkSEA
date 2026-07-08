@@ -1,4 +1,4 @@
-# CHỈ THỊ THỰC THI LIÊN TỤC — AIWork SEA
+# CHỈ THỊ THỰC THI LIÊN TỤC — AIWORK SEA
 **Đây là file lệnh vận hành cho AI (Claude Code hoặc agent tương đương). Dán file này vào đầu mỗi phiên làm việc và ra lệnh: "Đọc file này, thực hiện đúng theo quy trình, không dừng cho đến khi hoàn thiện."**
 
 ---
@@ -72,7 +72,7 @@ BẮT ĐẦU
 1. Thêm section CTA lớn ở trang chủ: "Tạo hồ sơ miễn phí — được nhà tuyển dụng chủ động liên hệ", link thẳng đến `/freelancer/edit`.
 2. Sau khi tool báo giá xuất PDF thành công, hiện modal: "Muốn được nhà tuyển dụng tìm thấy? Tạo hồ sơ miễn phí trong 2 phút" + nút CTA.
 3. Xây Mini Kanban: board 4 cột (Đã gửi/Đang trao đổi/Đã nhận/Từ chối), cho phép thêm card thủ công, kéo-thả giữa cột (dùng `dnd-kit`).
-4. Tích hợp: khi freelancer bấm "Ứng tuyển" 1 job trên chính AIWork SEA, tự động tạo card tương ứng trong Kanban của họ.
+4. Tích hợp: khi freelancer bấm "Ứng tuyển" 1 job trên chính AIWORK SEA, tự động tạo card tương ứng trong Kanban của họ.
 5. Thêm field `is_verified` (boolean) trong bảng freelancers — hiển thị badge "Đã xác thực" khi true.
 6. Tạo route admin đơn giản để tự tay set `is_verified = true` cho hồ sơ đạt chất lượng.
 

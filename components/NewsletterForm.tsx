@@ -51,7 +51,7 @@ export function NewsletterForm({
             type="email"
             required
             aria-label="Email nhận bản tin"
-            placeholder="email@cua-ban.com"
+            placeholder="aiworksea@gmail.com"
             maxLength={200}
             className={`field ${compact ? "" : "pl-11"}`}
           />

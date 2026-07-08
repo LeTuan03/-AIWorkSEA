@@ -307,7 +307,7 @@ export function QuoteBuilder() {
         )}
 
         <div className="mt-8 border-t border-line pt-3 text-center text-xs text-subtle">
-          Tạo bởi AIWork SEA · aiworksea
+          Tạo bởi AIWORK SEA · AIWORKSEA
         </div>
       </div>
 

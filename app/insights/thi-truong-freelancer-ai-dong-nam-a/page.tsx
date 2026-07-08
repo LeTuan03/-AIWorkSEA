@@ -10,12 +10,12 @@ const PATH = "/insights/thi-truong-freelancer-ai-dong-nam-a";
 export const metadata: Metadata = {
   title: "Thị trường tuyển dụng freelancer AI & Automation Đông Nam Á",
   description:
-    "Báo cáo dữ liệu từ tin đăng thật trên AIWork SEA: lĩnh vực nào đang tuyển nhiều nhất, kỹ năng được yêu cầu, tỷ lệ việc remote và mặt bằng ngân sách dự án.",
+    "Báo cáo dữ liệu từ tin đăng thật trên AIWORK SEA: lĩnh vực nào đang tuyển nhiều nhất, kỹ năng được yêu cầu, tỷ lệ việc remote và mặt bằng ngân sách dự án.",
   alternates: { canonical: PATH },
   openGraph: {
     title: "Thị trường tuyển dụng freelancer AI & Automation Đông Nam Á",
     description:
-      "Số liệu trực tiếp từ tin đăng trên AIWork SEA: lĩnh vực, kỹ năng, tỷ lệ remote và ngân sách.",
+      "Số liệu trực tiếp từ tin đăng trên AIWORK SEA: lĩnh vực, kỹ năng, tỷ lệ remote và ngân sách.",
     type: "article",
     url: PATH,
   },
@@ -40,7 +40,7 @@ export default async function InsightsPage() {
       headline:
         "Thị trường tuyển dụng freelancer AI & Automation Đông Nam Á",
       description:
-        "Báo cáo dữ liệu từ tin đăng thật trên AIWork SEA: lĩnh vực, kỹ năng, tỷ lệ remote và ngân sách.",
+        "Báo cáo dữ liệu từ tin đăng thật trên AIWORK SEA: lĩnh vực, kỹ năng, tỷ lệ remote và ngân sách.",
       url: `${SITE_URL}${PATH}`,
       dateModified: new Date().toISOString(),
       author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
@@ -60,7 +60,7 @@ export default async function InsightsPage() {
       </h1>
       <p className="mt-4 leading-relaxed text-muted">
         Số liệu dưới đây được tổng hợp trực tiếp từ {d.totalJobs} tin đang tuyển
-        của {d.totalCompanies} nhà tuyển dụng trên AIWork SEA — không ước lượng,
+        của {d.totalCompanies} nhà tuyển dụng trên AIWORK SEA — không ước lượng,
         không khảo sát. Trang này tự cập nhật khi có tin mới, nên con số bạn
         đang đọc luôn là hiện trạng mới nhất của thị trường.
       </p>
@@ -194,7 +194,7 @@ export default async function InsightsPage() {
           đăng tin
         </Link>{" "}
         để nhận được ứng viên phù hợp nhanh hơn. Trích dẫn số liệu tự do, vui
-        lòng dẫn nguồn AIWork SEA kèm liên kết về trang này.
+        lòng dẫn nguồn AIWORK SEA kèm liên kết về trang này.
       </p>
 
       <hr className="my-8 border-line" />

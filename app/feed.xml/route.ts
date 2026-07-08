@@ -39,7 +39,7 @@ export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>AIWork SEA · Việc làm AI &amp; Automation</title>
+    <title>AIWORK SEA · Việc làm AI &amp; Automation</title>
     <link>${SITE_URL}</link>
     <description>Việc làm freelancer AI &amp; Automation mới nhất ở Đông Nam Á</description>
     <language>vi</language>

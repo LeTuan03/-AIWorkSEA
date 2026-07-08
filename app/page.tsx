@@ -348,7 +348,7 @@ export default async function HomePage({
                 <ul className="space-y-3 text-sm text-muted">
                   {[
                     "Miễn phí, không giữ tiền, không trung gian",
-                    "Trang hồ sơ riêng chuẩn SEO: aiworksea.../freelancer/ban",
+                    "Trang hồ sơ riêng chuẩn SEO: AIWORKSEA.../freelancer/ban",
                     "Theo dõi ứng tuyển bằng bảng Kanban tích hợp",
                   ].map((line) => (
                     <li key={line} className="flex items-start gap-2">

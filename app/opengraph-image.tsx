@@ -4,12 +4,12 @@ import { loadOgFonts } from "@/lib/og";
 // Default social share card for every route that doesn't define its own.
 // On-brand retro skin: aged paper, ink border, rust accent, Space Mono.
 
-export const alt = "AIWork SEA · Việc làm freelancer AI & Automation ở Đông Nam Á";
+export const alt = "AIWORK SEA · Việc làm freelancer AI & Automation ở Đông Nam Á";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 const CARD_TEXT =
-  "AIWORK SEA aiworksea.com Việc làm freelancer AI & Automation Remote · Contract · Part-time ở Đông Nam Á LLM Data Computer Vision";
+  "AIWORK SEA AIWORKSEA.com Việc làm freelancer AI & Automation Remote · Contract · Part-time ở Đông Nam Á LLM Data Computer Vision";
 
 export default async function OgImage() {
   const fonts = await loadOgFonts(CARD_TEXT);
@@ -55,7 +55,7 @@ export default async function OgImage() {
               AIWORK SEA
             </div>
             <div style={{ display: "flex", color: "#6b5f48", fontSize: 26 }}>
-              aiworksea.com
+              AIWORKSEA.com
             </div>
           </div>
 

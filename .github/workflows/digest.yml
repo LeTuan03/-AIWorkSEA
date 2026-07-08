@@ -1,7 +1,7 @@
 name: Weekly AI Jobs Digest
 
 # Sends the newsletter every Monday ~08:00 Vietnam time (01:00 UTC).
-# Requires two repo secrets: SITE_URL (e.g. https://aiworksea.com) and CRON_SECRET
+# Requires two repo secrets: SITE_URL (e.g. https://AIWORKSEA.com) and CRON_SECRET
 # (must match the deployed app's CRON_SECRET env var).
 on:
   schedule:

@@ -218,7 +218,7 @@ export function KanbanBoard({ initialCards }: { initialCards: TrackerCard[] }) {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
           role="dialog"
           aria-modal="true"
-          aria-label="Chia sẻ AIWork SEA"
+          aria-label="Chia sẻ AIWORK SEA"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShareFor(null);
           }}
@@ -239,13 +239,13 @@ export function KanbanBoard({ initialCards }: { initialCards: TrackerCard[] }) {
               Chúc mừng bạn nhận việc {shareFor.title}!
             </h3>
             <p className="mt-2 text-sm text-muted">
-              Quen ai đang tìm dự án AI &amp; Automation? Giới thiệu AIWork SEA
+              Quen ai đang tìm dự án AI &amp; Automation? Giới thiệu AIWORK SEA
               cho họ — càng nhiều freelancer chất lượng, càng nhiều nhà tuyển
               dụng tìm đến.
             </p>
             <div className="mt-5">
               <ShareButtons
-                title="Mình vừa nhận việc qua AIWork SEA — job board cho freelancer AI & Automation ở Đông Nam Á"
+                title="Mình vừa nhận việc qua AIWORK SEA — job board cho freelancer AI & Automation ở Đông Nam Á"
                 url={typeof window !== "undefined" ? window.location.origin : ""}
               />
             </div>

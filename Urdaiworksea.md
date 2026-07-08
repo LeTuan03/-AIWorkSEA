@@ -1,4 +1,4 @@
-# URD (User Requirement Document) v2 — AIWork SEA
+# URD (User Requirement Document) v2 — AIWORK SEA
 ## Nguyên tắc: Freelancer dùng miễn phí trước — có roadmap kiếm tiền rõ ràng cho sau
 
 **Thay đổi so với bản trước:** Toàn bộ tính năng dành cho freelancer ở giai đoạn hiện tại là **miễn phí, không paywall**. Mục tiêu ưu tiên bây giờ là tăng số lượng freelancer + nhà tuyển dụng dùng thật, tạo network effect. Việc thu phí được thiết kế sẵn trong kiến trúc nhưng **kích hoạt theo từng mốc (trigger) cụ thể**, không bật ngay.
@@ -7,7 +7,7 @@
 - Phần lớn job board ngách cần khoảng 5.000–10.000 lượt truy cập/tháng thì việc thu phí mới có ý nghĩa — nhưng ngách càng hẹp, giá trị freelancer/nhà tuyển dụng càng cao thì ngưỡng này càng thấp.
 - Mô hình thu phí bền vững nhất trong ngành vẫn là **thu từ nhà tuyển dụng** (đăng tin, tin nổi bật, xem hồ sơ) — **không thu phí người tìm việc/freelancer**, trừ vài trường hợp ngoại lệ hiếm.
 - Trình tự triển khai được khuyến nghị: (1) đăng tin trả phí cơ bản → (2) tin nổi bật (upsell, biên lợi nhuận cao vì không tốn thêm chi phí) → (3) truy cập hồ sơ/resume database → (4) tài trợ newsletter khi đã đủ subscriber → (5) subscription cho nhà tuyển dụng thân thiết.
-- Có case thực tế: 1 job board ngách chuyên AI đạt lợi nhuận chỉ sau vài tháng nhờ chi phí vận hành cực thấp, dù doanh thu tuyệt đối không lớn — đúng mô hình một-mình-vận-hành như AIWork SEA.
+- Có case thực tế: 1 job board ngách chuyên AI đạt lợi nhuận chỉ sau vài tháng nhờ chi phí vận hành cực thấp, dù doanh thu tuyệt đối không lớn — đúng mô hình một-mình-vận-hành như AIWORK SEA.
 
 ---
 
@@ -79,11 +79,11 @@
 | 6 | Chia sẻ báo giá qua link xem online | Nice-to-have |
 
 **Gợi ý kỹ thuật:**
-- Frontend: React/Next.js (tái dùng stack hiện tại của AIWork SEA)
+- Frontend: React/Next.js (tái dùng stack hiện tại của AIWORK SEA)
 - Xuất PDF: **print-to-PDF của trình duyệt** (`window.print()` + print stylesheet) — 0 dependency, tiếng Việt luôn đúng dấu; xem lý do đổi ở Phần L
 - Bản đầu có thể lưu local (localStorage) cho user chưa đăng nhập
 
-**Ghi chú:** Có thể gắn dòng nhỏ "Tạo bởi AIWork SEA" cuối PDF — đây là kênh marketing miễn phí, không phải rào cản trả phí.
+**Ghi chú:** Có thể gắn dòng nhỏ "Tạo bởi AIWORK SEA" cuối PDF — đây là kênh marketing miễn phí, không phải rào cản trả phí.
 
 ---
 
@@ -98,12 +98,12 @@
 | 1 | Board 4 cột: Đã gửi / Đang trao đổi / Đã nhận / Từ chối | Must-have |
 | 2 | Thêm card thủ công (tên job, khách, link, ghi chú) | Must-have |
 | 3 | Kéo-thả card giữa các cột | Must-have |
-| 4 | Tự động tạo card khi freelancer apply job ngay trên AIWork SEA | Điểm khác biệt lớn nhất — nên làm sau khi có sẵn A.1 |
+| 4 | Tự động tạo card khi freelancer apply job ngay trên AIWORK SEA | Điểm khác biệt lớn nhất — nên làm sau khi có sẵn A.1 |
 | 5 | Nhắc follow-up (VD: 3 ngày chưa phản hồi thì nhắc) | Nice-to-have |
 
-**Gợi ý kỹ thuật:** **`dnd-kit`** cho kéo-thả (`react-beautiful-dnd` đã ngừng bảo trì). Dùng chung tài khoản đăng nhập với AIWork SEA, không bắt tạo tài khoản mới.
+**Gợi ý kỹ thuật:** **`dnd-kit`** cho kéo-thả (`react-beautiful-dnd` đã ngừng bảo trì). Dùng chung tài khoản đăng nhập với AIWORK SEA, không bắt tạo tài khoản mới.
 
-**Vì sao miễn phí:** đây là công cụ giữ chân (retention) — giữ freelancer quay lại AIWork SEA thường xuyên, gián tiếp tăng traffic để đạt ngưỡng mở monetization ở Phần B nhanh hơn.
+**Vì sao miễn phí:** đây là công cụ giữ chân (retention) — giữ freelancer quay lại AIWORK SEA thường xuyên, gián tiếp tăng traffic để đạt ngưỡng mở monetization ở Phần B nhanh hơn.
 
 ---
 
@@ -121,7 +121,7 @@
 ### GHI CHÚ KỸ THUẬT CHUNG
 
 - Dù chưa thu phí, nên thiết kế sẵn các field liên quan (VD: `payment_status`, `is_featured` mặc định `null`/`free`) trong DB ngay từ đầu — để sau này bật monetization (xem roadmap Phần B) không phải build lại schema.
-- Toàn bộ Phần A nên dùng chung 1 hệ thống tài khoản với AIWork SEA hiện tại, không tạo tài khoản riêng cho từng tool.
+- Toàn bộ Phần A nên dùng chung 1 hệ thống tài khoản với AIWORK SEA hiện tại, không tạo tài khoản riêng cho từng tool.
 
 ---
 
@@ -418,7 +418,7 @@ model Payment {
 
 ### E.3. Tool báo giá
 - [ ] Thêm/xoá/sửa hạng mục, tự tính tổng + thuế + chiết khấu, cập nhật realtime.
-- [ ] Xuất PDF client-side, layout theo skin retro, có dòng "Tạo bởi AIWork SEA" cuối trang (không watermark chặn).
+- [ ] Xuất PDF client-side, layout theo skin retro, có dòng "Tạo bởi AIWORK SEA" cuối trang (không watermark chặn).
 - [ ] Khách chưa đăng nhập: lưu `localStorage`; đã đăng nhập: lưu DB + xem lại lịch sử.
 - [ ] (Should) Link chia sẻ `/quote/[slug]` xem online, read-only.
 

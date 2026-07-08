@@ -8,7 +8,7 @@ import type { JobFilters } from "@/lib/jobs";
 export type LandingPage = {
   slug: string;
   group: "skill" | "worktype" | "location";
-  // <title> (template appends "· AIWork SEA")
+  // <title> (template appends "· AIWORK SEA")
   title: string;
   h1: string;
   description: string; // meta description, ~150 chars
@@ -37,7 +37,7 @@ export const LANDING_PAGES: LandingPage[] = [
     description:
       "Tin tuyển freelancer LLM và Prompt Engineering: xây RAG, chatbot doanh nghiệp, tối ưu prompt. Việc remote khắp Đông Nam Á, ứng tuyển trực tiếp.",
     intro:
-      "Prompt engineering và ứng dụng LLM là nhóm việc tăng nhanh nhất trên AIWork SEA. Nhà tuyển dụng tìm người dựng pipeline RAG, đánh giá chất lượng đầu ra và tối ưu chi phí gọi mô hình — kinh nghiệm thực tế quan trọng hơn bằng cấp.",
+      "Prompt engineering và ứng dụng LLM là nhóm việc tăng nhanh nhất trên AIWORK SEA. Nhà tuyển dụng tìm người dựng pipeline RAG, đánh giá chất lượng đầu ra và tối ưu chi phí gọi mô hình — kinh nghiệm thực tế quan trọng hơn bằng cấp.",
     filter: { category: "LLM & Prompt Engineering" },
   },
   {

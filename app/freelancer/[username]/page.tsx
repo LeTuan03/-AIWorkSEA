@@ -18,10 +18,23 @@ import { ShareButtons } from "@/components/ShareButtons";
 
 type Params = { params: Promise<{ username: string }> };
 
+// "Tạm ẩn hồ sơ" (availability HIDDEN) means invisible to everyone except the
+// owner (preview) and admins. UNLISTED stays reachable by direct link, noindex.
+async function canView(profile: {
+  availability: string;
+  userId: string;
+}): Promise<boolean> {
+  if (profile.availability !== "HIDDEN") return true;
+  const me = await getCurrentUser();
+  return me?.id === profile.userId || me?.role === "ADMIN";
+}
+
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { username } = await params;
   const profile = await getProfileByUsername(username);
-  if (!profile) return { title: "Không tìm thấy hồ sơ" };
+  if (!profile || !(await canView(profile))) {
+    return { title: "Không tìm thấy hồ sơ", robots: { index: false } };
+  }
 
   const hidden =
     profile.visibility === "UNLISTED" || profile.availability === "HIDDEN";
@@ -52,7 +65,7 @@ const availabilityStyles: Record<string, string> = {
 export default async function FreelancerProfilePage({ params }: Params) {
   const { username } = await params;
   const profile = await getProfileByUsername(username);
-  if (!profile) notFound();
+  if (!profile || !(await canView(profile))) notFound();
 
   const [me, skills] = [await getCurrentUser(), parseSkills(profile.skills)];
   const isOwner = me?.id === profile.userId;
@@ -176,7 +189,7 @@ export default async function FreelancerProfilePage({ params }: Params) {
 
         <div className="mt-6 border-t border-line pt-6">
           <ShareButtons
-            title={`${profile.displayName} — freelancer AI & Automation trên AIWork SEA`}
+            title={`${profile.displayName} — freelancer AI & Automation trên AIWORK SEA`}
           />
         </div>
       </div>

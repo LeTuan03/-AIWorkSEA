@@ -4,7 +4,7 @@
 
 export type SendResult = { ok: boolean; skipped?: boolean };
 
-const FROM_FALLBACK = "AIWork SEA <onboarding@resend.dev>";
+const FROM_FALLBACK = "AIWORK SEA <onboarding@resend.dev>";
 
 export async function sendEmail(opts: {
   to: string;
