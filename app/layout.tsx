@@ -39,6 +39,9 @@ export const metadata: Metadata = {
     "remote AI jobs",
   ],
   alternates: { canonical: "/" },
+  verification: {
+    google: "qugqN4Pfqv8re0526S67cOlEColV-NRq9aTdt0agAG8",
+  },
   openGraph: {
     title: "AIWork SEA",
     description:
