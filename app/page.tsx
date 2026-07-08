@@ -9,6 +9,7 @@ import {
   type JobSort,
 } from "@/lib/jobs";
 import { CATEGORIES, isValidSort } from "@/lib/constants";
+import { buildWebSiteJsonLd, buildOrganizationJsonLd } from "@/lib/seo";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { Filters } from "@/components/Filters";
 import { JobCard } from "@/components/JobCard";
@@ -58,6 +59,16 @@ export default async function HomePage({
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            buildWebSiteJsonLd(),
+            buildOrganizationJsonLd(),
+          ]),
+        }}
+      />
+
       {/* Hero (§8: content + floating glass cards) */}
       <section className="relative mx-auto max-w-7xl px-4">
         <div className="grid items-center gap-12 py-16 sm:py-20 lg:min-h-[calc(100dvh-72px)] lg:grid-cols-[1.05fr_0.95fr]">

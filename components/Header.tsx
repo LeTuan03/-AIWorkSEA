@@ -16,7 +16,7 @@ export async function Header() {
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-xl text-sm font-bold text-accent-solid-fg">
             <img
-              src="/icon.jpg"
+              src="/icon.svg"
               alt="AIWork SEA Logo"
               className="h-full w-full object-cover"
             />

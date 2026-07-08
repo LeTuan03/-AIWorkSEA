@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     locale: "vi_VN",
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "AIWork SEA",
     description:
       "Việc làm freelancer AI & Automation ở Đông Nam Á: remote, contract, part-time.",

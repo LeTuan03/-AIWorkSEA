@@ -18,7 +18,7 @@ import {
   timeAgo,
 } from "@/lib/jobs";
 import { LOCATION_LABELS } from "@/lib/constants";
-import { buildJobPostingJsonLd } from "@/lib/seo";
+import { buildJobPostingJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { JobCard } from "@/components/JobCard";
 import { ShareButtons } from "@/components/ShareButtons";
@@ -59,7 +59,14 @@ export default async function JobDetailPage({
   const job = await getJob(id);
   if (!job || job.status !== "PUBLISHED") notFound();
 
-  const jsonLd = buildJobPostingJsonLd(job);
+  const jsonLd = [
+    buildJobPostingJsonLd(job),
+    buildBreadcrumbJsonLd([
+      { name: "Trang chủ", url: "/" },
+      { name: job.category, url: `/?category=${encodeURIComponent(job.category)}` },
+      { name: job.title, url: `/jobs/${job.id}` },
+    ]),
+  ];
   const skills = parseSkills(job.skills);
   const similar = await getSimilarJobs(job, 3);
   const companyHref = `/companies/${encodeURIComponent(job.company)}`;

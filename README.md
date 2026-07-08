@@ -95,7 +95,7 @@ app/
   admin/{page,actions}.tsx       # kiểm duyệt + featured (ADMIN)
   login, signup, (auth)/actions  # xác thực
   api/auth/[...nextauth]         # Auth.js handlers
-  sitemap.ts, robots.ts, manifest.ts, icon.jpg
+  sitemap.ts, robots.ts, manifest.ts, icon.svg
   error.tsx, global-error.tsx, loading.tsx
 auth.ts, auth.config.ts, middleware.ts   # Auth.js + bảo vệ route
 lib/
