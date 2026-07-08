@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/db";
 import { SITE_URL } from "@/lib/seo";
 import { getPublicProfiles } from "@/lib/profiles";
+import { LANDING_PAGES } from "@/lib/landing";
 
 // Render at request time, not during the build/export step: the sitemap depends
 // on the database, which isn't guaranteed to be reachable while Netlify builds.
@@ -14,6 +15,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/companies`, changeFrequency: "daily", priority: 0.6 },
     { url: `${SITE_URL}/tools/quote`, changeFrequency: "monthly", priority: 0.4 },
     { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.4 },
+    { url: `${SITE_URL}/insights/thi-truong-freelancer-ai-dong-nam-a`, changeFrequency: "weekly", priority: 0.6 },
+    // SEO landing pages (GĐ2) — one URL per curated category/location page.
+    { url: `${SITE_URL}/viec-lam`, changeFrequency: "daily", priority: 0.7 },
+    ...LANDING_PAGES.map((p) => ({
+      url: `${SITE_URL}/viec-lam/${p.slug}`,
+      changeFrequency: "daily" as const,
+      priority: 0.7,
+    })),
   ];
 
   let jobs: { id: string; updatedAt: Date; company: string }[] = [];

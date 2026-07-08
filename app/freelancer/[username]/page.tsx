@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Mail, Phone, ExternalLink, Pencil, CircleUser } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  ExternalLink,
+  Pencil,
+  CircleUser,
+  BadgeCheck,
+} from "lucide-react";
 import { getProfileByUsername } from "@/lib/profiles";
 import { getCurrentUser } from "@/lib/session";
 import { parseSkills } from "@/lib/jobs";
 import { AVAILABILITY_LABELS } from "@/lib/constants";
 import { buildProfileJsonLd, SITE_URL } from "@/lib/seo";
+import { ShareButtons } from "@/components/ShareButtons";
 
 type Params = { params: Promise<{ username: string }> };
 
@@ -95,6 +103,12 @@ export default async function FreelancerProfilePage({ params }: Params) {
               >
                 {AVAILABILITY_LABELS[profile.availability] ?? profile.availability}
               </span>
+              {profile.isVerified && (
+                <span className="inline-flex items-center gap-1 rounded-lg bg-success-weak px-2 py-0.5 text-xs font-semibold text-success">
+                  <BadgeCheck size={12} strokeWidth={2} aria-hidden />
+                  Đã xác thực
+                </span>
+              )}
               {isOwner && (
                 <Link
                   href="/freelancer/edit"
@@ -158,6 +172,12 @@ export default async function FreelancerProfilePage({ params }: Params) {
               {profile.contactPhone}
             </span>
           )}
+        </div>
+
+        <div className="mt-6 border-t border-line pt-6">
+          <ShareButtons
+            title={`${profile.displayName} — freelancer AI & Automation trên AIWork SEA`}
+          />
         </div>
       </div>
     </div>

@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Trash2, Printer, FileText, RotateCcw } from "lucide-react";
+import Link from "next/link";
+import { Plus, Trash2, Printer, FileText, RotateCcw, UserPlus, X } from "lucide-react";
 import { CURRENCIES } from "@/lib/constants";
+import { track } from "@/components/Analytics";
 
 type Item = { id: string; label: string; unitPrice: string; quantity: string };
 
@@ -57,6 +59,18 @@ const labelCls = "mb-1 block text-sm font-medium text-fg";
 export function QuoteBuilder() {
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [loaded, setLoaded] = useState(false);
+  // Post-export nudge (GĐ1): after the PDF dialog closes, invite the
+  // freelancer to create a public profile.
+  const [showCta, setShowCta] = useState(false);
+
+  useEffect(() => {
+    if (!showCta) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowCta(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showCta]);
 
   // Load any saved draft (guest persistence, no account needed).
   useEffect(() => {
@@ -211,7 +225,15 @@ export function QuoteBuilder() {
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <button type="button" onClick={() => window.print()} className="btn btn-primary">
+          <button
+            type="button"
+            onClick={() => {
+              track("quote_tool_used");
+              window.print();
+              setShowCta(true);
+            }}
+            className="btn btn-primary"
+          >
             <Printer size={16} strokeWidth={1.75} aria-hidden /> In / Lưu PDF
           </button>
           <button type="button" onClick={reset} className="btn btn-secondary">
@@ -288,6 +310,51 @@ export function QuoteBuilder() {
           Tạo bởi AIWork SEA · aiworksea
         </div>
       </div>
+
+      {/* Post-export CTA (GĐ1): quote users are exactly the freelancers we
+          want in the directory. Shown once per export, easy to dismiss. */}
+      {showCta && (
+        <div
+          className="quote-noprint fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Tạo hồ sơ freelancer miễn phí"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowCta(false);
+          }}
+        >
+          <div className="animate-float-in glass-modal relative w-full max-w-[440px] p-7">
+            <button
+              type="button"
+              onClick={() => setShowCta(false)}
+              aria-label="Đóng"
+              className="absolute right-4 top-4 text-subtle transition hover:text-fg"
+            >
+              <X size={18} strokeWidth={2} aria-hidden />
+            </button>
+            <h3 className="font-display text-lg font-semibold text-fg">
+              Báo giá đã sẵn sàng. Còn khách hàng tiếp theo?
+            </h3>
+            <p className="mt-2 text-sm text-muted">
+              Tạo hồ sơ freelancer miễn phí trong 2 phút để nhà tuyển dụng AI
+              &amp; Automation chủ động tìm thấy và liên hệ với bạn.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowCta(false)}
+                className="btn btn-secondary"
+              >
+                Để sau
+              </button>
+              <Link href="/freelancer/edit" className="btn btn-primary">
+                <UserPlus size={16} strokeWidth={2} aria-hidden />
+                Tạo hồ sơ miễn phí
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

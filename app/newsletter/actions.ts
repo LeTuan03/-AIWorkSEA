@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { rateLimit } from "@/lib/rate-limit";
 import { sendEmail } from "@/lib/email";
+import { recordEvent } from "@/lib/analytics";
 import {
   EMAIL_RE,
   upsertPendingSubscriber,
@@ -49,6 +50,8 @@ export async function subscribeAction(
   if (result.status === "already_confirmed") {
     return { ok: true, message: "Email này đã đăng ký rồi. Cảm ơn bạn!" };
   }
+
+  await recordEvent("newsletter_signup", { refId: source });
 
   const url = confirmUrl(result.confirmToken);
   const send = await sendEmail({

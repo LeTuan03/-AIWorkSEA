@@ -44,9 +44,17 @@ export default async function AdminPage() {
         <h1 className="font-display text-2xl font-bold tracking-tight text-fg">
           Quản trị · Kiểm duyệt
         </h1>
-        <Link href="/admin/metrics" className="btn btn-secondary">
-          Số liệu & mốc kích hoạt
-        </Link>
+        <div className="flex gap-2">
+          <Link href="/admin/stats" className="btn btn-secondary">
+            Số liệu
+          </Link>
+          <Link href="/admin/metrics" className="btn btn-secondary">
+            Mốc kích hoạt
+          </Link>
+          <Link href="/admin/freelancers" className="btn btn-secondary">
+            Hồ sơ
+          </Link>
+        </div>
       </div>
 
       {/* Moderation queue */}

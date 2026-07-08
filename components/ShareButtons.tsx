@@ -4,9 +4,11 @@ import { Link2 } from "lucide-react";
 import { toast } from "@/components/Toast";
 import { FacebookIcon, XIcon, LinkedInIcon } from "@/components/BrandIcons";
 
-export function ShareButtons({ title }: { title: string }) {
+export function ShareButtons({ title, url }: { title: string; url?: string }) {
+  // Default: share the page we're on. Pass `url` to share something else
+  // (e.g. the homepage from the tracker's "got the job" prompt).
   const currentUrl = () =>
-    typeof window !== "undefined" ? window.location.href : "";
+    url ?? (typeof window !== "undefined" ? window.location.href : "");
 
   const copy = async () => {
     try {

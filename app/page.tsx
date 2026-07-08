@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { Globe, FilePlus2, Search, Handshake, Star } from "lucide-react";
+import {
+  Globe,
+  FilePlus2,
+  Search,
+  Handshake,
+  Star,
+  UserPlus,
+  BadgeCheck,
+} from "lucide-react";
 import {
   getJobs,
   getStats,
@@ -303,6 +311,58 @@ export default async function HomePage({
                   <p className="mt-2 text-sm text-muted">{item.body}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Freelancer profile CTA (GĐ1: seed the supply side) */}
+      {!isFiltered && (
+        <section className="border-t border-line">
+          <div className="mx-auto max-w-7xl px-4 py-16">
+            <div className="rounded-2xl glass p-8 sm:p-12">
+              <div className="grid items-center gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+                <div>
+                  <span className="chip chip-accent">
+                    <BadgeCheck size={14} strokeWidth={1.75} aria-hidden />
+                    Dành cho freelancer
+                  </span>
+                  <h2 className="font-display mt-4 text-3xl font-bold tracking-tight text-fg sm:text-4xl">
+                    Tạo hồ sơ miễn phí — được nhà tuyển dụng chủ động liên hệ
+                  </h2>
+                  <p className="mt-3 max-w-xl text-muted">
+                    Hồ sơ công khai với kỹ năng, portfolio và mức giá tham khảo.
+                    Nhà tuyển dụng AI &amp; Automation tìm thấy bạn qua Google và
+                    danh sách freelancer — không cần chờ tin đăng phù hợp.
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <Link href="/freelancer/edit" className="btn btn-primary">
+                      <UserPlus size={16} strokeWidth={2} aria-hidden />
+                      Tạo hồ sơ trong 2 phút
+                    </Link>
+                    <Link href="/freelancers" className="btn btn-secondary">
+                      Xem các freelancer khác
+                    </Link>
+                  </div>
+                </div>
+                <ul className="space-y-3 text-sm text-muted">
+                  {[
+                    "Miễn phí, không giữ tiền, không trung gian",
+                    "Trang hồ sơ riêng chuẩn SEO: aiworksea.../freelancer/ban",
+                    "Theo dõi ứng tuyển bằng bảng Kanban tích hợp",
+                  ].map((line) => (
+                    <li key={line} className="flex items-start gap-2">
+                      <BadgeCheck
+                        size={16}
+                        strokeWidth={1.75}
+                        aria-hidden
+                        className="mt-0.5 shrink-0 text-accent"
+                      />
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </section>

@@ -118,6 +118,8 @@ model FreelancerProfile {
   availability String  @default("OPEN") // "OPEN" | "BUSY" | "HIDDEN"
   visibility   String  @default("PUBLIC") // "PUBLIC" | "UNLISTED"
   isFeatured   Boolean @default(false) // future: employer-paid profile boost
+  // Admin-granted trust badge (Giai đoạn 1 — set by hand for quality profiles).
+  isVerified   Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -203,6 +205,20 @@ model ApplicationCard {
   updatedAt DateTime @updatedAt
 
   @@index([userId, column])
+}
+
+// First-party analytics (Giai đoạn 0). One row per event; no cookies, no PII.
+// "pageview" rows carry the path; named events (job_view, job_apply_click,
+// profile_created, newsletter_signup, quote_tool_used) power /admin/stats.
+model Event {
+  id        String   @id @default(cuid())
+  name      String // "pageview" | "job_view" | "job_apply_click" | ...
+  path      String? // page the event happened on, e.g. "/jobs/abc123"
+  refId     String? // related entity id (jobId, username...), optional
+  createdAt DateTime @default(now())
+
+  @@index([name, createdAt])
+  @@index([createdAt])
 }
 
 // Part B — shared payment ledger. Nothing charges yet; rows are created only

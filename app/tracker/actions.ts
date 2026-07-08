@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { requireUser } from "@/lib/session";
+import { getCurrentUser, requireUser } from "@/lib/session";
 import { rateLimit } from "@/lib/rate-limit";
 import { isValidColumn, CARD_LIMITS } from "@/lib/constants";
 import {
@@ -13,6 +13,7 @@ import {
   type TrackerCard,
 } from "@/lib/tracker";
 import { getJob } from "@/lib/jobs";
+import { recordEvent } from "@/lib/analytics";
 
 export type CreateCardResult =
   | { ok: true; card: TrackerCard }
@@ -74,6 +75,33 @@ export async function moveCardAction(
   const ok = await moveCard(user.id, toColumn, orderedIds);
   if (ok) revalidatePath("/tracker");
   return { ok };
+}
+
+// Fired when a visitor clicks "Ứng tuyển": records the apply event (works for
+// guests too) and auto-creates a tracker card for signed-in users (GĐ1).
+export async function applyClickAction(
+  jobId: string,
+): Promise<{ tracked: boolean }> {
+  const job = await getJob(jobId);
+  if (!job || job.status !== "PUBLISHED") return { tracked: false };
+
+  await recordEvent("job_apply_click", {
+    path: `/jobs/${job.id}`,
+    refId: job.id,
+  });
+
+  const user = await getCurrentUser();
+  if (!user) return { tracked: false };
+  if (await hasCardForJob(user.id, job.id)) return { tracked: false };
+
+  await createCard(user.id, {
+    title: job.title,
+    company: job.company,
+    link: `/jobs/${job.id}`,
+    jobId: job.id,
+  });
+  revalidatePath("/tracker");
+  return { tracked: true };
 }
 
 // "Track this application" button on a job page → creates a card, no duplicates.

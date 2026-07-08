@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Search, CircleUser, UserPlus } from "lucide-react";
+import { Search, CircleUser, UserPlus, BadgeCheck } from "lucide-react";
 import { listProfiles } from "@/lib/profiles";
 import { parseSkills } from "@/lib/jobs";
 import { AVAILABILITY_LABELS } from "@/lib/constants";
@@ -127,8 +127,18 @@ export default async function FreelancersPage({
                         </span>
                       )}
                       <div className="min-w-0 flex-1">
-                        <div className="font-display truncate font-semibold text-fg">
-                          {p.displayName}
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-display truncate font-semibold text-fg">
+                            {p.displayName}
+                          </span>
+                          {p.isVerified && (
+                            <BadgeCheck
+                              size={16}
+                              strokeWidth={2}
+                              aria-label="Đã xác thực"
+                              className="shrink-0 text-success"
+                            />
+                          )}
                         </div>
                         {p.headline && (
                           <p className="mt-0.5 line-clamp-2 text-sm text-muted">

@@ -22,8 +22,9 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Plus, Trash2, ExternalLink, GripVertical } from "lucide-react";
+import { Plus, Trash2, ExternalLink, GripVertical, PartyPopper, X } from "lucide-react";
 import { TRACKER_COLUMNS } from "@/lib/constants";
+import { ShareButtons } from "@/components/ShareButtons";
 import type { TrackerCard } from "@/lib/tracker";
 import {
   createCardAction,
@@ -55,6 +56,10 @@ export function KanbanBoard({ initialCards }: { initialCards: TrackerCard[] }) {
   const [newTitle, setNewTitle] = useState("");
   const [adding, setAdding] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Referral nudge (GĐ3): remember where a drag started so we can celebrate
+  // when a card lands in OFFER coming from another column.
+  const dragFromCol = useRef<string | null>(null);
+  const [shareFor, setShareFor] = useState<TrackerCard | null>(null);
 
   const applyCols = (next: Cols) => {
     colsRef.current = next;
@@ -70,7 +75,9 @@ export function KanbanBoard({ initialCards }: { initialCards: TrackerCard[] }) {
     void moveCardAction(col, colsRef.current[col].map((c) => c.id));
 
   function onDragStart(e: DragStartEvent) {
-    setActiveId(String(e.active.id));
+    const id = String(e.active.id);
+    setActiveId(id);
+    dragFromCol.current = findContainer(colsRef.current, id);
   }
 
   function onDragOver(e: DragOverEvent) {
@@ -122,6 +129,13 @@ export function KanbanBoard({ initialCards }: { initialCards: TrackerCard[] }) {
       }
     }
     persist(overCol);
+
+    // Landed in "Đã nhận" from somewhere else: congratulate + suggest sharing.
+    if (overCol === "OFFER" && dragFromCol.current !== "OFFER") {
+      const moved = colsRef.current.OFFER.find((c) => c.id === activeId);
+      if (moved) setShareFor(moved);
+    }
+    dragFromCol.current = null;
   }
 
   async function addCard() {
@@ -197,6 +211,56 @@ export function KanbanBoard({ initialCards }: { initialCards: TrackerCard[] }) {
           {activeCard ? <CardBody card={activeCard} dragging /> : null}
         </DragOverlay>
       </DndContext>
+
+      {/* "Đã nhận việc" referral prompt (GĐ3) — light nudge, no reward scheme. */}
+      {shareFor && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Chia sẻ AIWork SEA"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShareFor(null);
+          }}
+        >
+          <div className="animate-float-in glass-modal relative w-full max-w-[440px] p-7">
+            <button
+              type="button"
+              onClick={() => setShareFor(null)}
+              aria-label="Đóng"
+              className="absolute right-4 top-4 text-subtle transition hover:text-fg"
+            >
+              <X size={18} strokeWidth={2} aria-hidden />
+            </button>
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-weak text-accent-weak-fg">
+              <PartyPopper size={22} strokeWidth={1.75} aria-hidden />
+            </span>
+            <h3 className="font-display mt-4 text-lg font-semibold text-fg">
+              Chúc mừng bạn nhận việc {shareFor.title}!
+            </h3>
+            <p className="mt-2 text-sm text-muted">
+              Quen ai đang tìm dự án AI &amp; Automation? Giới thiệu AIWork SEA
+              cho họ — càng nhiều freelancer chất lượng, càng nhiều nhà tuyển
+              dụng tìm đến.
+            </p>
+            <div className="mt-5">
+              <ShareButtons
+                title="Mình vừa nhận việc qua AIWork SEA — job board cho freelancer AI & Automation ở Đông Nam Á"
+                url={typeof window !== "undefined" ? window.location.origin : ""}
+              />
+            </div>
+            <div className="mt-6 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setShareFor(null)}
+                className="btn btn-secondary"
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

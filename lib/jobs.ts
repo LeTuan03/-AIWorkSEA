@@ -160,6 +160,17 @@ export async function getJob(id: string): Promise<Job | null> {
   return prisma.job.findUnique({ where: { id } });
 }
 
+// Owner's account email, for moderation notifications. Null for seeded or
+// orphaned listings (owner deleted) — callers just skip sending then.
+export async function getJobOwnerEmail(job: Job): Promise<string | null> {
+  if (!job.userId) return null;
+  const user = await prisma.user.findUnique({
+    where: { id: job.userId },
+    select: { email: true },
+  });
+  return user?.email ?? null;
+}
+
 // All jobs owned by a recruiter (any status), for their dashboard.
 export async function getJobsByUser(userId: string): Promise<Job[]> {
   return prisma.job.findMany({

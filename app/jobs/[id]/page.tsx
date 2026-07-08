@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import {
   Star,
@@ -18,10 +18,13 @@ import {
   timeAgo,
 } from "@/lib/jobs";
 import { LOCATION_LABELS } from "@/lib/constants";
+import { landingSlugForCategory } from "@/lib/landing";
 import { buildJobPostingJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { JobCard } from "@/components/JobCard";
 import { ShareButtons } from "@/components/ShareButtons";
+import { ApplyButton } from "@/components/ApplyButton";
+import { TrackEvent } from "@/components/Analytics";
 import { trackJobAction } from "@/app/tracker/actions";
 
 type Params = { id: string };
@@ -33,8 +36,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const job = await getJob(id);
-  // Trigger a real 404 during the metadata phase (before streaming) so
-  // unpublished jobs don't leak their title/OG tags and the status is 404.
+  // Closed/expired listings keep their link equity: permanent redirect to the
+  // related category page instead of a 404 (GĐ2). Runs in the metadata phase,
+  // before streaming, so the status code is a real redirect.
+  if (job && job.status === "CLOSED") {
+    permanentRedirect(`/viec-lam/${landingSlugForCategory(job.category)}`);
+  }
+  // Missing or not-yet-approved jobs 404 without leaking title/OG tags.
   if (!job || job.status !== "PUBLISHED") notFound();
   const description = job.description.slice(0, 155);
   return {
@@ -57,6 +65,9 @@ export default async function JobDetailPage({
 }) {
   const { id } = await params;
   const job = await getJob(id);
+  if (job && job.status === "CLOSED") {
+    permanentRedirect(`/viec-lam/${landingSlugForCategory(job.category)}`);
+  }
   if (!job || job.status !== "PUBLISHED") notFound();
 
   const jsonLd = [
@@ -82,6 +93,7 @@ export default async function JobDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <TrackEvent name="job_view" refId={job.id} />
 
       {/* Breadcrumb */}
       <nav className="flex flex-wrap items-center gap-1.5 text-sm text-muted" aria-label="Breadcrumb">
@@ -184,15 +196,12 @@ export default async function JobDetailPage({
             </dl>
 
             {applyHref ? (
-              <a
+              <ApplyButton
+                jobId={job.id}
                 href={applyHref}
-                target={job.applyUrl ? "_blank" : undefined}
-                rel={job.applyUrl ? "noopener noreferrer" : undefined}
-                aria-label={`Ứng tuyển vị trí ${job.title} tại ${job.company}`}
-                className="btn btn-primary mt-6 w-full"
-              >
-                Ứng tuyển ngay
-              </a>
+                external={Boolean(job.applyUrl)}
+                ariaLabel={`Ứng tuyển vị trí ${job.title} tại ${job.company}`}
+              />
             ) : (
               <p className="mt-6 rounded-xl bg-surface-2 px-4 py-3 text-center text-sm text-muted">
                 Chưa có thông tin ứng tuyển

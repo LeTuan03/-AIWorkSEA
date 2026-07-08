@@ -18,7 +18,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-5">
           <div className="col-span-2 sm:col-span-1">
             <div className="flex items-center gap-2">
               <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent-solid text-xs font-bold text-accent-solid-fg">
@@ -44,6 +44,16 @@ export function Footer() {
             ]}
           />
           <FooterCol
+            title="Việc làm"
+            items={[
+              { href: "/viec-lam/remote", label: "Việc AI remote" },
+              { href: "/viec-lam/prompt-engineering", label: "Prompt Engineering" },
+              { href: "/viec-lam/ai-automation", label: "Automation / RPA" },
+              { href: "/viec-lam/viet-nam", label: "Tại Việt Nam" },
+              { href: "/viec-lam", label: "Tất cả danh mục" },
+            ]}
+          />
+          <FooterCol
             title="Nhà tuyển dụng"
             items={[
               { href: "/post", label: "Đăng tin" },
@@ -54,6 +64,7 @@ export function Footer() {
           <FooterCol
             title="Khác"
             items={[
+              { href: "/insights/thi-truong-freelancer-ai-dong-nam-a", label: "Báo cáo thị trường" },
               { href: "/about", label: "Về tôi" },
               { href: "/#how", label: "Cách hoạt động" },
               { href: "/login", label: "Đăng nhập" },

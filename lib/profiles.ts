@@ -91,6 +91,22 @@ export async function upsertProfile(
   });
 }
 
+// Admin verification screen: every profile, newest first, any visibility.
+export async function getAllProfiles(limit = 200): Promise<FreelancerProfile[]> {
+  return prisma.freelancerProfile.findMany({
+    orderBy: { createdAt: "desc" },
+    take: limit,
+  });
+}
+
+// Admin-granted trust badge (GĐ1) — set by hand for quality profiles.
+export async function setProfileVerified(
+  id: string,
+  isVerified: boolean,
+): Promise<FreelancerProfile> {
+  return prisma.freelancerProfile.update({ where: { id }, data: { isVerified } });
+}
+
 // Public usernames for the sitemap (excludes UNLISTED / HIDDEN).
 export async function getPublicProfiles(): Promise<
   Pick<FreelancerProfile, "username" | "updatedAt">[]

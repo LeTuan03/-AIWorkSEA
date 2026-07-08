@@ -4,7 +4,12 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/session";
 import { rateLimit } from "@/lib/rate-limit";
-import { isUsernameTaken, upsertProfile } from "@/lib/profiles";
+import {
+  getProfileByUserId,
+  isUsernameTaken,
+  upsertProfile,
+} from "@/lib/profiles";
+import { recordEvent } from "@/lib/analytics";
 import {
   validateProfileForm,
   type ProfileFormState,
@@ -39,6 +44,9 @@ export async function saveProfileAction(
     };
   }
 
+  // Distinguish create from update before the upsert (GĐ0: profile_created).
+  const existing = await getProfileByUserId(user.id);
+
   try {
     await upsertProfile(user.id, result.data);
   } catch {
@@ -46,6 +54,10 @@ export async function saveProfileAction(
       error: "Có lỗi khi lưu hồ sơ. Vui lòng thử lại.",
       values: result.values,
     };
+  }
+
+  if (!existing) {
+    await recordEvent("profile_created", { refId: result.data.username });
   }
 
   revalidatePath(`/freelancer/${result.data.username}`);
